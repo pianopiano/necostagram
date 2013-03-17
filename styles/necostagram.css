@@ -1,0 +1,188 @@
+body {
+	font-family:"lucida grande", tahoma, verdana, arial, sans-serif;
+	font-size:12px;
+	background: url(../images/white_wall_hash.png);
+	background-position-x:0px;
+	text-align: left;
+}
+
+.image {
+	float: left;
+	margin: 8px;
+	background-color: #ffffff;
+	overflow: hidden;
+	border: 1px solid #ccc;
+	border-radius: 1px;  
+    -webkit-border-radius: 1px; 
+    -moz-border-radius: 1px;
+    color: #8c7e7e;
+    opacity: 0;
+    min-height: 280px;
+}
+
+.image img {
+	padding: 10px;
+	border-bottom: 1px dotted #ddd;
+}
+
+.image a {
+	text-decoration: none;
+}
+
+.description {
+	background-color: #f2f0f0;
+	padding: 10px;
+	position: relative;
+}
+
+.like {
+	position: absolute;
+	top: 15px;
+	right: 10px;
+	width: 28px;
+	height:25px;
+	font-size: 10px;
+	color: #ffffff;
+	text-align: center;
+	padding: 5px 0 0 0;
+	background: url(../images/like.png) no-repeat 0 0;
+	cursor: pointer;
+}
+
+.caption {
+	clear: both;
+	width: 200px;
+	font-size: 10px;
+}
+
+.username {
+	font-size: 14px;
+	margin: 5px 0 0 0;
+	padding: 0;
+	color: #444444;
+}
+
+.thumbnail {
+	padding:0 !important;
+	float: left;
+	margin: 0 10px 10px 0;
+	border: 1px solid #ccc;
+}
+
+.shadow {
+	box-shadow: 1px 1px 1px #ccc;
+	-moz-box-shadow: 1px 1px 1px #ccc;
+	-webkit-box-shadow: 1px 1px 1px #ccc;
+}
+
+.clearfix {
+	zoom: 1;
+}
+
+#necoContainer {
+	max-width: 1200px;
+	min-width: 200px;
+	margin: 60px auto;
+	position: relative;
+}
+
+#necoLoader {
+	display: none;
+	position: fixed;
+	top:300px;
+}
+
+.necostagram {
+	color: #8c7e7e;
+	margin: 10px auto;
+	text-align: center;
+}
+
+#header {
+	position: fixed;
+	top:-60px;
+	width: 100%;
+	background: url(../images/cream_dust.png);
+	margin: 0 auto;
+	padding: 10px 0;
+	height: 30px;
+	font-size: 22px;
+	text-align: center;
+	color: #8c7e7e;
+	z-index: 1;
+	box-shadow: 3px 3px 10px #ccc;
+	-moz-box-shadow: 3px 3px 10px #ccc;
+	-webkit-box-shadow: 3px 3px 10px #ccc;
+	opacity: 0.95;
+}
+
+h1 {
+	width: 305px;
+	height: 45px;
+	margin: 0 auto;
+	background: url(../images/nobi.gif) no-repeat 205px -12px;
+}
+
+#necoContainer,
+.box {
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -ms-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+#necoContainer {
+    -webkit-transition-property: height, width;
+    -moz-transition-property: height, width;
+    -ms-transition-property: height, width;
+    -o-transition-property: height, width;
+    transition-property: height, width;
+}
+
+#footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background: url(../images/cream_dust.png);
+}
+
+#footer-inner {
+	width: 1200px;
+	height: 10px;
+	margin: 0 auto;
+	position: relative;
+}
+
+#pageTop {
+	cursor: pointer;
+	position: absolute;
+	bottom: 0;
+	right:-100px;
+	width: 100px;
+	height: 100px;
+}
+
+.box {
+    -webkit-transition-property: left, right, top;
+    -moz-transition-property: left, right, top;
+    -ms-transition-property: left, right, top;
+    -o-transition-property: left, right, top;
+    transition-property: left, right, top;
+}
+
+#login {
+	position: fixed;
+	top: :5px;
+	right: -100px;
+	font-size: 11px;
+	z-index: 2;
+	cursor: pointer;
+	
+}
+
+#access_token {
+	overflow: hidden;
+	width: 0;
+	height: 0;
+}
