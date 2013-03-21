@@ -18,15 +18,15 @@
     curl_close($ch);
     
     if ($json->access_token){
-	    echo "<div id='access_token'>".$json->access_token."</div>";
+	    //echo "<div id='access_token'>".$json->access_token."</div>";
     } else {
-	    echo "<div id='access_token'>".$at."</div>";
+	    //echo "<div id='access_token'>".$at."</div>";
     }
     //echo "username=".$json->user->username;
     //echo "profile_picture=".$json->user->profile_picture;
     //echo "id=".$json->user->id;
     //echo "full_name=".$json->user->full_name;
-//https://api.instagram.com/oauth/authorize/?client_id=f3af4e71702d492793ff32c61af1bbdc&redirect_uri=http://pianopiano.jp/neco.stagram/index.php&response_type=code&scope=likes
+    //https://api.instagram.com/oauth/authorize/?client_id=f3af4e71702d492793ff32c61af1bbdc&redirect_uri=http://pianopiano.jp/neco.stagram/index.php&response_type=code&scope=likes
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -39,12 +39,12 @@
 	<script type="text/javascript" src="scripts/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="scripts/jquery.easing.js"></script>
 	<script type="text/javascript" src="scripts/jquery.masonry.min.js"></script>
+	<script type="text/javascript">
+		var at = "<?= $at; ?>";
+	</script>
 	<script type="text/javascript" src="scripts/necostagram.js"></script>
 </head>
 <body id="body">
-	<div id="login">
-		<p>Login</p>
-	</div>
 	<header id="header">
 		<h1>necostagram</h1>
 	</header>

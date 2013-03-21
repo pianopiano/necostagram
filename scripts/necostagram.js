@@ -4,9 +4,7 @@
 
 (function() {
 	var $header,$necoLoader,$necoContainer,max=39,dev='pc',isAnimated=true,sound;
-	var accessToken = $('#access_token').html();
-	$('#access_token').empty().remove();
-	console.log(accessToken)
+	var accessToken = at;
 	window.onload = function() {
 		$header.animate({'top':'0'},1000);
 		$necoLoader.fadeOut(1000, function(){
@@ -17,57 +15,15 @@
 				$necoContainer.find('.image').eq(i).delay(i*30).animate({'opacity':'1'},300,'swing');
 			}
 			
-			sound.play();
+			//sound.play();
 		});
-		//後ほど実装
-		//setupLogin();
+		
 	}
 	
-	function setupLogin(){
-		$('#login').animate({'right':'20px'}, 500,'swing').click(function(){
-			var client_id = 'f3af4e71702d492793ff32c61af1bbdc';
-			var redirect_uri = 'http://pianopiano.jp/neco.stagram/index.php';
-			location.href = 'https://api.instagram.com/oauth/authorize/?client_id='+client_id+'&redirect_uri='+redirect_uri+'&response_type=code&scope=likes';
-		});
-		
-		$('.like').live('click',function(){
-			var like = false;
-			var id = $(this).parent('.description').parent('.box').attr('id');
-			var src = $(this).css('background-image').split('like');
-
-			if (src[1]=='.png)'){
-				$(this).css({'background-image':src[0]+'like_x.png)'});
-				like = true;
-			} else if (src[1]=='_x.png)') {
-				$(this).css({'background-image':src[0]+'like.png)'});
-				console.log(src[0]+'like'+src[1]);
-				like = false;
-			}
-			if (like == true){
-				$.ajax({
-					type: 'POST',
-					url: "https://api.instagram.com/v1/media/"+id+"/likes",
-					data: { access_token: accessToken},
-					success: function(data) {
-						//console(data);
-					}
-				});
-			} else if (like == false) {
-				// うまくいかない
-				$.ajax({
-					type:"DELETE",
-					data: { access_token: accessToken},
-					url:"https://api.instagram.com/v1/media/"+id+"/likes",
-					success: function(data) {
-						
-					}
-				})
-			}		
-		})
-	}
+	
 		
 	$(function() {
-		sound = new Audio('sound/neco.mp4');
+		//sound = new Audio('sound/neco.mp4');
 		var num = 0,len = 0,IDs = [],necoTags = ['ねこ','ネコ','猫','neco','neko'],$win = $(window);
 		/*
 		if (navigator.userAgent.indexOf('iPhone') > 0){
@@ -126,7 +82,7 @@
 												'<p class="username"><strong>'+user.username+'</strong></p>'+
 											'</a>'+
 											'<p class="caption">'+capsText+'</p>'+
-											'<p class="like"></p>'+
+											//'<p class="like"></p>'+
 											//'<p class="like">'+_neco.data[i].likes.count+'</p>'+
 										'</div>'+
 									'</div>';
@@ -138,7 +94,7 @@
 						if (len==(max-1)){};
 					} else {
 						if (IDs[0]!=user.id){
-							sound.play();
+							//sound.play();
 							IDs.unshift(user.id);
 							$necoContainer.prepend(content);
 							setTimeout(function(){
