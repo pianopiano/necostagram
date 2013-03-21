@@ -149,7 +149,7 @@ h1 {
 
 #footer-inner {
 	width: 1200px;
-	height: 10px;
+	height: 0px;
 	margin: 0 auto;
 	position: relative;
 }

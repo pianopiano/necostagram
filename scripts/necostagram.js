@@ -3,37 +3,26 @@
 */
 
 (function() {
-	var $header
-	,	$necoLoader
-	,	$necoContainer
-	,	max=39
-	,	dev='pc'
-	,	isAnimated=true
-	,	sound
-	,	_isAnimated=true
-	,	accessToken = at
-	,	$pageTop = $('#pageTop')
-	,	isJump = false
-	,	pTopImgs = [
-			'images/j1.gif',
-			'images/j2.gif',
-			'images/j3.gif'
-		];
-	
+	var $header,$necoLoader,$necoContainer,max=39,dev='pc',isAnimated=true,sound,_isAnimated=true;
+	var accessToken = at;
 	window.onload = function() {
 		$header.animate({'top':'0'},1000);
 		$necoLoader.fadeOut(1000, function(){
 			$necoLoader.remove();
 			$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
+
 			for (var i=0; i<max;i++){
 				$necoContainer.find('.image').eq(i).delay(i*30).animate({'opacity':'1'},300,'swing');
 			}
 		});
+		
 	}
 	
 		
 	$(function() {
+		
 		var num = 0,len = 0,IDs = [],necoTags = ['ねこ','ネコ','猫','neco','neko'],$win = $(window);
+		
 		if (navigator.userAgent.indexOf('iPhone') > 0){
 			max=19;
 			$('.box').css({
@@ -109,7 +98,7 @@
 							setTimeout(function(){
 								resizeHandler();
 								$necoContainer.find('.image').css({'opacity':'1'});
-							}, 500);
+							}, 1000);
 						};
 					};
 				};
@@ -136,6 +125,7 @@
 			$necoContainer.masonry({itemSelector : '.box',isAnimated : _isAnimated});
 		}
 		
+		var $pageTop = $('#pageTop'),isJump = false,pTopImgs = ['images/j1.gif','images/j2.gif','images/j3.gif'];
 		function mover(){$pageTop.find('img').attr('src',pTopImgs[1]);};
 		function mout() {$pageTop.find('img').attr('src',pTopImgs[0]);};
 		setupPageTop();
@@ -146,7 +136,8 @@
 		
 		function necoJump(){
 			isJump = true;
-			$pageTop.unbind('mouseover', mover).unbind('mouseout', mout).unbind('click',necoJump).stop().animate({'right':'-100px','bottom':$win.height()+'px'}, 1500,'easeInOutExpo',setupPageTop).find('img').attr('src',pTopImgs[2]);
+			setTimeout(function(){$pageTop.find('img').attr('src',pTopImgs[2]);}, 200);
+			$pageTop.unbind('mouseover', mover).unbind('mouseout', mout).unbind('click',necoJump).stop().animate({'right':'-100px','bottom':$win.height()+'px'}, 1500,'easeInOutExpo',setupPageTop);
 			$('body,html').animate({scrollTop: 0}, 1200,'easeInOutExpo');
 			return false;
 		}
