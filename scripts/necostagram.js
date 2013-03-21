@@ -3,34 +3,38 @@
 */
 
 (function() {
-	var $header,$necoLoader,$necoContainer,max=39,dev='pc',isAnimated=true,sound,_isAnimated=true;
-	var accessToken = at;
+	var $header
+	,	$necoLoader
+	,	$necoContainer
+	,	max=39
+	,	dev='pc'
+	,	isAnimated=true
+	,	_isAnimated=true;
 	window.onload = function() {
 		$header.animate({'top':'0'},1000);
 		$necoLoader.fadeOut(1000, function(){
 			$necoLoader.remove();
 			$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
-
 			for (var i=0; i<max;i++){
 				$necoContainer.find('.image').eq(i).delay(i*30).animate({'opacity':'1'},300,'swing');
 			}
 		});
-		
 	}
 	
-		
+	
 	$(function() {
-		
 		var num = 0,len = 0,IDs = [],necoTags = ['ねこ','ネコ','猫','neco','neko'],$win = $(window);
-		
 		if (navigator.userAgent.indexOf('iPhone') > 0){
 			max=19;
 			$('.box').css({
-				'-webkit-transition-duration':'0s','-moz-transition-duration':'0s','-ms-transition-duration':'0s','-o-transition-duration':'0s','transition-duration':'0s'
+				'-webkit-transition-duration':'0s',
+				'-moz-transition-duration':'0s',
+				'-ms-transition-duration':'0s',
+				'-o-transition-duration':'0s',
+				'transition-duration':'0s'
 			});
 			_isAnimated = false;
-		} else if (navigator.userAgent.indexOf('iPad') == -1){
-		}
+		} else if (navigator.userAgent.indexOf('iPad') == -1){};
 		
 		$header = $('#header');
 		$necoLoader = $('#necoLoader');
@@ -42,10 +46,10 @@
 		
 		
 		function necoLoad(hash){
-			setWidth ();
+			setWidth();
 			$.ajax({
-				url: "https://api.instagram.com/v1/tags/"+hash+"/media/recent",
-				data: { access_token: accessToken, count:max.toString() },
+				url: "https://api.instagram.com/v1/tags/"+hash+"/media/recent?client_id=2832c5afa7ad40c29cc84477817056b4",
+				data: { count:max.toString() },
 				dataType: "jsonp",
 				error: function(jqXHR, textStatus, errorThrown) {$necoContainer.text(textStatus);},
 				success: function(data, textStatus, jqXHR) {
