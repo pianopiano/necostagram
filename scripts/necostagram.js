@@ -4,17 +4,26 @@
 
 (function(){
 	$(function(){
-		var $header,$necoLoader,$necoContainer,max=39,dev='pc',isAnimated=true,sound,_isAnimated=true,loaded=false,num=0,len=0,IDs=[],necoTags=['ねこ','ネコ','猫','neco','neko'],$win=$(window);
+		var $header=$('#header')
+		,	$necoLoader=$('#necoLoader')
+		,	$necoContainer=$('#necoContainer')
+		,	$pageTop=$('#pageTop')
+		,	$win=$(window)
+		,	num=0
+		,	max=39
+		,	_isAnimated=true
+		,	loaded=false
+		,	isJump=false
+		,	IDs=[]
+		,	necoTags=['ねこ','ネコ','猫','neco','neko']
+		,	pTopImgs=['images/j1.gif','images/j2.gif','images/j3.gif'];
 		
 		if (navigator.userAgent.indexOf('iPhone') > 0){
 			max=19;
 			$('.box').css({'-webkit-transition-duration':'0s','-moz-transition-duration':'0s','-ms-transition-duration':'0s','-o-transition-duration':'0s','transition-duration':'0s'});
 			_isAnimated=false;
-		}// else if (navigator.userAgent.indexOf('iPad') == -1){}
+		} //else if (navigator.userAgent.indexOf('iPad') == -1){}
 		
-		$header=$('#header');
-		$necoLoader=$('#necoLoader');
-		$necoContainer=$('#necoContainer');
 		$necoLoader.css({'left':$win.width()/2-30+'px','top':($win.height()/2)-100+'px'}).fadeIn(500);
 		
 		$win.resize(resizeHandler);
@@ -36,26 +45,32 @@
 		
 		
 		function necoBuild(data){			
-			var _neco=data,i;
+			var _neco=data
+			,	i
+			,	len=0;
 			for (i=0; i < max; i++){
-				var user,link,url,d=_neco.data,capsText;
+				var user
+				,	link
+				,	url
+				,	capsText
+				,	_data=_neco.data[i];
 				
-				try{url=_neco.data[i].images.thumbnail.url;} 
+				try{url=_data.images.thumbnail.url;} 
 				catch(e){url='#'};
 				
-				try{link=_neco.data[i].link;} 
+				try{link=_data.link;} 
 				catch(e){link='#'};
 				link=link.replace("instagr.am","instagram.com");
 				
-				try{user=_neco.data[i].user;} 
+				try{user=_data.user;} 
 				catch(e){user={'profile_picture':'','username':''};};
 				
-				try{capsText=_neco.data[i].caption.text;} 
+				try{capsText=_data.caption.text;} 
 				catch(e){capsText='';};
 				
 				if (link!='#'||url!='#'){
-					var content=	'<div class="box image shadow" id="'+data.data[i].id+'">'+
-										'<a href="'+link+'" target="_blank">''<img src="'+url+'" width="200" /></a><br />'+
+					var content=	'<div class="box image shadow" id="'+_data.id+'">'+
+										'<a href="'+link+'" target="_blank"><img src="'+url+'" width="200" /></a><br />'+
 										'<div class="description">'+
 											'<a href="http://instagram.com/'+user.username+'" target="_blank">'+
 												'<img class="thumbnail" src="'+user.profile_picture+'" width="30" />'+
@@ -102,7 +117,7 @@
 			$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
 		}
 		
-		var $pageTop=$('#pageTop'),isJump=false,pTopImgs=['images/j1.gif','images/j2.gif','images/j3.gif'];
+		
 		function mover(){$pageTop.find('img').attr('src',pTopImgs[1]);};
 		function mout(){$pageTop.find('img').attr('src',pTopImgs[0]);};
 		
@@ -127,7 +142,6 @@
 	            if(!isJump)$pageTop.stop().animate({'bottom':'-80px'},300);
 	        }
 	    });
-	    
 	    
 	    
 		window.onload=function(){
