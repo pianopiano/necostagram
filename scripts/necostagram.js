@@ -16,8 +16,10 @@
 		,	isJump=false
 		,	IDs=[]
 		,	necoTags=['ねこ','ネコ','猫','neco','neko']
-		,	pTopImgs=['images/j1.gif','images/j2.gif','images/j3.gif'];
+		,	pTopImgs=['images/j1.gif','images/j2.gif','images/j3.gif']
+		,	$sns = $('#sns');
 		
+		$sns.hide();
 		if (navigator.userAgent.indexOf('iPhone') > 0){
 			max=19;
 			$('.box').css({'-webkit-transition-duration':'0s','-moz-transition-duration':'0s','-ms-transition-duration':'0s','-o-transition-duration':'0s','transition-duration':'0s'});
@@ -124,13 +126,13 @@
 		setupPageTop();
 		function setupPageTop(){
 			isJump=false;
-			$pageTop.bind('mouseover',mover).bind('mouseout',mout).bind('click',necoJump).css({'right':'-100','bottom':'-90px'}).find('img').attr('src',pTopImgs[0]);
+			$pageTop.bind('mouseover',mover).bind('mouseout',mout).bind('click',necoJump).css({'right':'0','bottom':'-90px'}).find('img').attr('src',pTopImgs[0]);
 		}
 		
 		function necoJump(){
 			isJump=true;
 			setTimeout(function(){$pageTop.find('img').attr('src',pTopImgs[2]);},200);
-			$pageTop.unbind('mouseover',mover).unbind('mouseout',mout).unbind('click',necoJump).stop().animate({'right':'-100px','bottom':$win.height()+'px'},1500,'easeInOutExpo',setupPageTop);
+			$pageTop.unbind('mouseover',mover).unbind('mouseout',mout).unbind('click',necoJump).stop().animate({'right':'100px','bottom':$win.height()+'px'},1500,'easeInOutExpo',setupPageTop);
 			$('body,html').animate({scrollTop: 0},1200,'easeInOutExpo');
 			return false;
 		}
@@ -147,9 +149,13 @@
 		window.onload=function(){
 			$header.animate({'top':'0'},1000);
 			$necoLoader.fadeOut(1000,function(){
+				$necoContainer.append($sns)
 				$necoLoader.remove();
 				$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
+				console.log($necoContainer.children().length)
 				loaded = true;
+				
+				$sns.fadeIn();	
 				for (var i=0; i<max;i++){
 					$necoContainer.find('.image').eq(i).delay(i*30).animate({'opacity':'1'},300,'swing');
 				}
