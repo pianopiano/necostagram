@@ -74,6 +74,12 @@ body {
 	-moz-box-shadow: 1px 1px 1px #ccc;
 	-webkit-box-shadow: 1px 1px 1px #ccc;
 }
+.shadowh {
+	box-shadow: 1px 1px 1px #FFE3CD;
+	-moz-box-shadow: 1px 1px 1px #FFE3CD;
+	-webkit-box-shadow: 1px 1px 1px #FFE3CD;
+}
+
 
 .clearfix {
 	zoom: 1;
@@ -145,7 +151,7 @@ h1 {
 	bottom: 0;
 	width: 100%;
 	background: url(../images/cream_dust.png);
-	border-top: 1px solid #ccc; 
+	border-top: 1px solid #eee; 
 }
 
 #footer-inner {

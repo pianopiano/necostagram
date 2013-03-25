@@ -72,7 +72,7 @@
 				
 				if (link!='#'||url!='#'){
 					var content=	'<div class="box image shadow" id="'+_data.id+'">'+
-										'<a href="'+link+'" target="_blank"><img src="'+url+'" width="200" /></a><br />'+
+										'<a href="'+link+'" target="_blank"><img class="thumbneco" src="'+url+'" width="200" /></a><br />'+
 										'<div class="description">'+
 											'<a href="http://instagram.com/'+user.username+'" target="_blank">'+
 												'<img class="thumbnail" src="'+user.profile_picture+'" width="30" />'+
@@ -160,6 +160,20 @@
 					$necoContainer.find('.image').eq(i).delay(i*30).animate({'opacity':'1'},300,'swing');
 				}
 			});
+			
+			$('.thumbneco').live('mouseover',function(){
+				$(this).css({'border-bottom':'1px dotted #8c7e7e','background-color':'#f0ebec'});
+				$(this).css({ transform: "rotate(6deg)" });
+			}).live('mouseout',function(){
+				$(this).css({'border-bottom':'1px dotted #ddd','background-color':'#ffffff'});
+				$(this).css({ transform: "rotate(0deg)" });
+			})
+			$('.description').hover(function(){
+				$(this).find('.thumbnail').css({'border':'1px solid #8c7e7e'}).end().find('.username').css({'color':'#8c7e7e'});
+			},function(){
+				$(this).find('.thumbnail').css({'border':'1px solid #ccc'}).end().find('.username').css({'color':'#444444'});
+			})
+			
 		}
 	return this;
 	});
