@@ -204,14 +204,24 @@ h1 {
 }
 #fb-root {
 	float: left;
-	margin: 0 10px;
+	margin: 0 8px;
 }
 .regular{
-	margin: 0 10px;
+	margin: 0 8px;
+}
+.twitter-share-button {
+	float: left;
+	margin: 0 8px;
 }
 /*
 	sns
 ---------------------------------------*/
+#icon {
+	float: right;
+	margin: 0 9px;
+	padding: 0;
+	border: 2px solid #ccc;
+}
 
 
 

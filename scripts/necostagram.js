@@ -22,7 +22,13 @@
 		$sns.hide();
 		if (navigator.userAgent.indexOf('iPhone') > 0){
 			max=19;
-			$('.box').css({'-webkit-transition-duration':'0s','-moz-transition-duration':'0s','-ms-transition-duration':'0s','-o-transition-duration':'0s','transition-duration':'0s'});
+			$('.box').css({
+				'-webkit-transition-duration':'0s',
+				'-moz-transition-duration':'0s',
+				'-ms-transition-duration':'0s',
+				'-o-transition-duration':'0s',
+				'transition-duration':'0s'
+			});
 			_isAnimated=false;
 		} //else if (navigator.userAgent.indexOf('iPad') == -1){}
 		
@@ -72,7 +78,8 @@
 				
 				if (link!='#'||url!='#'){
 					var content=	'<div class="box image shadow" id="'+_data.id+'">'+
-										'<a href="'+link+'" target="_blank"><img class="thumbneco" src="'+url+'" width="200" /></a><br />'+
+										'<a href="'+link+'" target="_blank">'+
+										'<img class="thumbneco" src="'+url+'" width="200" /></a><br />'+
 										'<div class="description">'+
 											'<a href="http://instagram.com/'+user.username+'" target="_blank">'+
 												'<img class="thumbnail" src="'+user.profile_picture+'" width="30" />'+
@@ -109,7 +116,7 @@
 			if (($ww>=1200)){$necoContainer.width($ww)} else 
 			if (($ww<1200)&&($ww>960)){$necoContainer.width(960);} else 
 			if (($ww<950)&&($ww>720)){$necoContainer.width(720);} else 
-			if (($ww<720)&&($ww>480)){$necoContainer.width(480);} else 
+			if (($ww<720)&&($ww>490)){$necoContainer.width(490);} else 
 			if ($ww<480){$necoContainer.width(200);} else{};
 		}
 		
@@ -162,8 +169,8 @@
 			});
 			
 			$('.thumbneco').live('mouseover',function(){
-				$(this).css({'border-bottom':'1px dotted #8c7e7e','background-color':'#f0ebec'});
-				$(this).css({ transform: "rotate(6deg)" });
+				$(this).css({'border-bottom':'1px dotted #ddd','background-color':'#f0ebec'});
+				$(this).css({ transform: "rotate(8deg)" });
 			}).live('mouseout',function(){
 				$(this).css({'border-bottom':'1px dotted #ddd','background-color':'#ffffff'});
 				$(this).css({ transform: "rotate(0deg)" });
@@ -172,6 +179,11 @@
 				$(this).find('.thumbnail').css({'border':'1px solid #8c7e7e'}).end().find('.username').css({'color':'#8c7e7e'});
 			},function(){
 				$(this).find('.thumbnail').css({'border':'1px solid #ccc'}).end().find('.username').css({'color':'#444444'});
+			});
+			$('#icon').hover(function(){
+				$(this).fadeTo(0,0.8);
+			},function(){
+				$(this).fadeTo(0,1);
 			})
 			
 		}
