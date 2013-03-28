@@ -4,6 +4,7 @@
 
 (function(){
 	$(function(){
+		
 		var $header=$('#header')
 		,	$necoLoader=$('#necoLoader')
 		,	$necoContainer=$('#necoContainer')
@@ -153,6 +154,49 @@
 	    });
 	    
 	    
+	    // login
+	    function setupLogin(){
+			$('#login').animate({'right':'20px'}, 500,'swing').click(function(){
+				var client_id = 'f39149070d2d4c5fb73cdddcaf00e0dd';
+				var redirect_uri = 'http://necostagram.com/';
+				location.href = 'https://api.instagram.com/oauth/authorize/?client_id='+client_id+'&redirect_uri='+redirect_uri+'&response_type=code&scope=likes';
+			});
+	
+			$('.like').live('click',function(){
+				var like = false;
+				var id = $(this).parent('.description').parent('.box').attr('id');
+				var src = $(this).css('background-image').split('like');
+	
+				if (src[1]=='.png)'){
+					$(this).css({'background-image':src[0]+'like_x.png)'});
+					like = true;
+				} else if (src[1]=='_x.png)') {
+					$(this).css({'background-image':src[0]+'like.png)'});
+					console.log(src[0]+'like'+src[1]);
+					like = false;
+				}
+				if (like == true){
+					$.ajax({
+						type: 'POST',
+						url: "https://api.instagram.com/v1/media/"+id+"/likes",
+						data: { access_token: accessToken},
+						dataType: "jsonp",
+						success: function(data) {
+						}
+					});
+				} else if (like == false) {
+					$.ajax({
+						type:"DELETE",
+						url:"https://api.instagram.com/v1/media/"+id+"/likes",
+						data: { access_token: accessToken},
+						dataType: "jsonp",
+						success: function(data) {
+	
+						}
+					})
+				}		
+			})
+	    }
 		window.onload=function(){
 			$header.animate({'top':'0'},1000);
 			$necoLoader.fadeOut(1000,function(){
@@ -194,8 +238,10 @@
 			},function(){
 				$(this).fadeTo(0,1);
 			})
-			
+			setupLogin();
 		}
+
+		
 	return this;
 	});
 }).call(this);

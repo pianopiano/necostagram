@@ -193,8 +193,8 @@ h1 {
 #login {
 	position: fixed;
 	top: :5px;
-	right: -100px;
-	font-size: 11px;
+	right: 0px;
+	font-size: 12px;
 	z-index: 2;
 	cursor: pointer;
 	

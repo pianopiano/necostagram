@@ -1,3 +1,31 @@
+<?php
+    $client_id = "f39149070d2d4c5fb73cdddcaf00e0dd";
+    $client_secret = "7f29987013714e51ad7b6ce43b0533ed";
+    $redirect_uri = "http://necostagram.com/";
+    $token_uri = 'https://api.instagram.com/oauth/access_token';
+    $at="0";
+    $post = "client_id=".$client_id."&client_secret=".$client_secret."&grant_type=authorization_code&redirect_uri=".$redirect_uri."&code=".$_GET["code"];
+     
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $token_uri);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+     
+    $json = json_decode(curl_exec($ch));
+    curl_close($ch);
+    
+    if ($json->access_token){
+    	$at = $json->access_token;
+	    //echo "<div id='access_token'>".$json->access_token."</div>";
+    } else {
+	   	//echo "<div id='access_token'>".$at."</div>";
+    }
+    
+    //https://api.instagram.com/oauth/authorize/?client_id=f3af4e71702d492793ff32c61af1bbdc&redirect_uri=http://pianopiano.jp/neco.stagram/index.php&response_type=code&scope=likes
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja" dir="ltr" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
@@ -18,11 +46,16 @@
 	<script type="text/javascript" src="scripts/jquery.masonry.min.js"></script>
 	<script type="text/javascript" src="scripts/jquery.transit.min.js"></script>
 	<script type="text/javascript" src="scripts/necostagram.js"></script>
+	<script type="text/javascript">
+		var at = <?php echo $at; ?>;
+		console.log(at[0]);
+	</script>
 </head>
 
 <body id="body">
 	<header id="header">
 		<h1>necostagram</h1>
+		<div id="login">log-in</div>
 	</header>
 	<div id="necoContainer" class="clearfix" style="position: relative;">
 		<img src="images/necoLoader.gif" id="necoLoader" width="80" height="152">
