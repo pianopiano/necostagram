@@ -17,12 +17,8 @@
     curl_close($ch);
     
     if ($json->access_token){
-    	$at = $json->access_token;
-	    //echo "<div id='access_token'>".$json->access_token."</div>";
-    } else {
-	   	//echo "<div id='access_token'>".$at."</div>";
+    	$at = (string) $json->access_token;
     }
-    
     //https://api.instagram.com/oauth/authorize/?client_id=f3af4e71702d492793ff32c61af1bbdc&redirect_uri=http://pianopiano.jp/neco.stagram/index.php&response_type=code&scope=likes
 ?>
 
@@ -39,7 +35,6 @@
 	<meta property="og:site_name" content="necostagram" />
 	<meta property="og:locale" content="ja_JP" />
 	<title>necostagram</title>
-	<link rel="stylesheet" href="styles/base.css" type="text/css" />
 	<link rel="stylesheet" href="styles/necostagram.css" type="text/css" />
 	<script type="text/javascript" src="scripts/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="scripts/jquery.easing.js"></script>
@@ -47,14 +42,14 @@
 	<script type="text/javascript" src="scripts/jquery.transit.min.js"></script>
 	<script type="text/javascript" src="scripts/necostagram.js"></script>
 	<script type="text/javascript">
-		var at = <?php echo $at; ?>;
-		console.log(at[0]);
+		var accessToken = " <?php echo $at; ?>";
+		console.log(accessToken);
 	</script>
 </head>
 
 <body id="body">
 	<header id="header">
-		<h1>necostagram</h1>
+		<h1><img src="images/logo.png" /></h1>
 		<div id="login">log-in</div>
 	</header>
 	<div id="necoContainer" class="clearfix" style="position: relative;">

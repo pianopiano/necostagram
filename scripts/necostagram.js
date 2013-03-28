@@ -4,7 +4,6 @@
 
 (function(){
 	$(function(){
-		
 		var $header=$('#header')
 		,	$necoLoader=$('#necoLoader')
 		,	$necoContainer=$('#necoContainer')
@@ -87,6 +86,7 @@
 												'<p class="username"><strong>'+user.username+'</strong></p>'+
 											'</a>'+
 											'<p class="caption">'+capsText+'</p>'+
+											'<p class="like"></p>'+
 										'</div>'+
 									'</div>';
 					if (max!=1){
@@ -155,7 +155,8 @@
 	    
 	    
 	    // login
-	    function setupLogin(){
+	    function setupLogin(accessToken){
+	    	
 			$('#login').animate({'right':'20px'}, 500,'swing').click(function(){
 				var client_id = 'f39149070d2d4c5fb73cdddcaf00e0dd';
 				var redirect_uri = 'http://necostagram.com/';
@@ -175,29 +176,37 @@
 					console.log(src[0]+'like'+src[1]);
 					like = false;
 				}
+				console.log('like = ' + like)
+				console.log('id = ' + id)
 				if (like == true){
+					console.log('push like!');
+					console.log("https://api.instagram.com/v1/media/"+id+"/likes?access_token="+accessToken)
 					$.ajax({
-						type: 'POST',
-						url: "https://api.instagram.com/v1/media/"+id+"/likes",
-						data: { access_token: accessToken},
-						dataType: "jsonp",
+						type: 'GET',
+						url: "https://api.instagram.com/v1/media/"+id+"/likes?access_token="+accessToken,
+						crossDomain: true,
+						//dataType: "jsonp",
 						success: function(data) {
+							console.log('add - success = ' + data);
 						}
 					});
 				} else if (like == false) {
+					console.log('DELETE like!')
 					$.ajax({
 						type:"DELETE",
 						url:"https://api.instagram.com/v1/media/"+id+"/likes",
 						data: { access_token: accessToken},
-						dataType: "jsonp",
+						crossDomain: true,
+						//dataType: "jsonp",
 						success: function(data) {
-	
+							console.log('delete - success = ' + data);
 						}
 					})
 				}		
 			})
 	    }
 		window.onload=function(){
+
 			$header.animate({'top':'0'},1000);
 			$necoLoader.fadeOut(1000,function(){
 				$necoContainer.append($sns)
@@ -238,7 +247,7 @@
 			},function(){
 				$(this).fadeTo(0,1);
 			})
-			setupLogin();
+			//setupLogin(accessToken);
 		}
 
 		
