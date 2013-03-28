@@ -168,12 +168,21 @@
 				}
 			});
 			
+			
 			$('.thumbneco').live('mouseover',function(){
-				$(this).css({'border-bottom':'1px dotted #ddd','background-color':'#f0ebec'});
-				$(this).css({ transform: "rotate(8deg)" });
+				//$(this).css({'border-bottom':'1px dotted #ddd','background-color':'#f0ebec'});
+				$(this).stop().transition({"-webkit-mask-size":"200px"}, 30, 'ease-out').css({ transform: "rotate(5deg)" }).closest('.image').stop().transition({
+					'background-color':'#f2f0f0',
+					'-webkit-border-top-left-radius':'110px','-moz-border-radius-topleft':'110px',
+					'-webkit-border-top-right-radius':'110px','-moz-border-radius-topright':'110px'
+				}, 30, 'ease-out');
 			}).live('mouseout',function(){
-				$(this).css({'border-bottom':'1px dotted #ddd','background-color':'#ffffff'});
-				$(this).css({ transform: "rotate(0deg)" });
+				//$(this).css({'border-bottom':'1px dotted #ddd','background-color':'#ffffff'});
+				$(this).stop().transition({"-webkit-mask-size":"280px"}, 30, 'ease-out').css({ transform: "rotate(0deg)" }).closest('.image').stop().transition({
+					'background-color':'#ffffff',
+					'-webkit-border-top-left-radius':'0px','-moz-border-radius-topleft':'0px',
+					'-webkit-border-top-right-radius':'0px','-moz-border-radius-topright':'0px'
+				}, 30, 'ease-out');
 			})
 			$('.description').hover(function(){
 				$(this).find('.thumbnail').css({'border':'1px solid #8c7e7e'}).end().find('.username').css({'color':'#8c7e7e'});
