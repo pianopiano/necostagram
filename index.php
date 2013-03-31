@@ -34,6 +34,8 @@
 	<meta property="og:image" content="http://necostagram.com/images/ogp.jpg" />
 	<meta property="og:site_name" content="necostagram" />
 	<meta property="og:locale" content="ja_JP" />
+	<meta name="keywords" content="にゃーにゃーにゃー">
+	<meta name="description" content="ヾ(ΦωΦ=)にゃにゃにゃにゃにゃにゃにゃにゃにゃんーにゃーにゃーにゃーにゃーにゃーにゃーにゃーにゃーにゃーにゃーにゃーー">
 	<title>necostagram</title>
 	<link rel="stylesheet" href="styles/necostagram.css" type="text/css" />
 	<script type="text/javascript" src="scripts/jquery-1.8.3.min.js"></script>
