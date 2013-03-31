@@ -4,10 +4,12 @@
 
 (function(){
 	$(function(){
-		var $header=$('#header')
+		var sobj
+		,	$header=$('#header')
 		,	$necoLoader=$('#necoLoader')
 		,	$necoContainer=$('#necoContainer')
 		,	$pageTop=$('#pageTop')
+		,	$thumbneco=$('.thumbneco')
 		,	$win=$(window)
 		,	num=0
 		,	max=39
@@ -17,11 +19,36 @@
 		,	IDs=[]
 		,	necoTags=['ねこ','ネコ','猫','neco','neko']
 		,	pTopImgs=['images/j1.gif','images/j2.gif','images/j3.gif']
-		,	$sns = $('#sns');
+		,	$sns = $('#sns')
+		,	ios = false;;
+		
+		
+		var audio = new Audio();
+        if      (audio.canPlayType("audio/ogg") == 'maybe') { sobj = new Audio('sound/neco1.ogg'); }
+        else if (audio.canPlayType("audio/mp3") == 'maybe') { sobj = new Audio('sound/neco1.mp3'); }
+        else if (audio.canPlayType("audio/wav") == 'maybe') { sobj = new Audio('sound/neco1.wav'); }
+		audio=null;
 		
 		$sns.hide();
-		if (navigator.userAgent.indexOf('iPhone') > 0){
+		$('#login').hide();
+		
+		if ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1)
+			|| navigator.userAgent.indexOf('iPad') > 0
+			|| navigator.userAgent.indexOf('Android') > 0)
+		{
+			isIos();
+		} else {
+			isPc();
+		}
+
+		
+		
+		function isIos() {
+			ios = true;
 			max=19;
+			if (navigator.userAgent.indexOf('iPad') > 0){
+				max=40;
+			}
 			$('.box').css({
 				'-webkit-transition-duration':'0s',
 				'-moz-transition-duration':'0s',
@@ -30,7 +57,16 @@
 				'transition-duration':'0s'
 			});
 			_isAnimated=false;
-		} //else if (navigator.userAgent.indexOf('iPad') == -1){}
+		}
+		
+		function isPc() {
+			$thumbneco.css({
+				'-webkit-mask-image':'url(../images/circle.png)',
+				'-webkit-mask-size':'280px',
+				'-webkit-mask-repeat':'no-repeat',
+				'-webkit-mask-position':'center'
+			})
+		}
 		
 		$necoLoader.css({'left':$win.width()/2-30+'px','top':($win.height()/2)-100+'px'}).fadeIn(500);
 		
@@ -52,7 +88,7 @@
 		}
 		
 		
-		function necoBuild(data){			
+		function necoBuild(data){	
 			var _neco=data
 			,	i
 			,	len=0;
@@ -86,7 +122,7 @@
 												'<p class="username"><strong>'+user.username+'</strong></p>'+
 											'</a>'+
 											'<p class="caption">'+capsText+'</p>'+
-											'<p class="like"></p>'+
+											//'<p class="like"></p>'+
 										'</div>'+
 									'</div>';
 					if (max!=1){
@@ -99,6 +135,7 @@
 							IDs.unshift(user.id);
 							$necoContainer.prepend(content);
 							setTimeout(function(){
+								sobj.play();
 								resizeHandler();
 								$necoContainer.find('.image').css({'opacity':'1'});
 							},1000);
@@ -117,14 +154,16 @@
 			if (($ww>=1200)){$necoContainer.width($ww)} else 
 			if (($ww<1200)&&($ww>960)){$necoContainer.width(960);} else 
 			if (($ww<950)&&($ww>720)){$necoContainer.width(720);} else 
-			if (($ww<720)&&($ww>490)){$necoContainer.width(490);} else 
+			if (($ww<720)&&($ww>480)){$necoContainer.width(480);} else 
 			if ($ww<480){$necoContainer.width(200);} else{};
 		}
 		
 		function resizeHandler(){
 			setWidth();
-			if(loaded)$necoContainer.masonry('destroy');
-			$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
+			if(!ios){
+				if(loaded)$necoContainer.masonry('destroy');
+				$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
+			}
 		}
 		
 		
@@ -156,8 +195,7 @@
 	    
 	    // login
 	    function setupLogin(accessToken){
-	    	
-			$('#login').animate({'right':'20px'}, 500,'swing').click(function(){
+			$('#login').fadeIn().animate({'right':'20px'}, 500,'swing').click(function(){
 				var client_id = 'f39149070d2d4c5fb73cdddcaf00e0dd';
 				var redirect_uri = 'http://necostagram.com/';
 				location.href = 'https://api.instagram.com/oauth/authorize/?client_id='+client_id+'&redirect_uri='+redirect_uri+'&response_type=code&scope=likes';
@@ -167,86 +205,97 @@
 				var like = false;
 				var id = $(this).parent('.description').parent('.box').attr('id');
 				var src = $(this).css('background-image').split('like');
-	
 				if (src[1]=='.png)'){
 					$(this).css({'background-image':src[0]+'like_x.png)'});
 					like = true;
 				} else if (src[1]=='_x.png)') {
 					$(this).css({'background-image':src[0]+'like.png)'});
-					console.log(src[0]+'like'+src[1]);
 					like = false;
 				}
-				console.log('like = ' + like)
-				console.log('id = ' + id)
+
 				if (like == true){
-					console.log('push like!');
-					console.log("https://api.instagram.com/v1/media/"+id+"/likes?access_token="+accessToken)
 					$.ajax({
-						type: 'GET',
-						url: "https://api.instagram.com/v1/media/"+id+"/likes?access_token="+accessToken,
+						type: 'POST',
+						url: "https://api.instagram.com/v1/media/"+id+"/likes",
+						data: { access_token: accessToken},
 						crossDomain: true,
-						//dataType: "jsonp",
+						dataType: "json",
+						beforeSend : function( xhr ){
+							xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+						},
 						success: function(data) {
-							console.log('add - success = ' + data);
+							//console.log('add - success = ' + data);
 						}
 					});
 				} else if (like == false) {
-					console.log('DELETE like!')
 					$.ajax({
+						url:"https://api.instagram.com/v1/media/"+id+"/likes?access_token="+accessToken,
 						type:"DELETE",
-						url:"https://api.instagram.com/v1/media/"+id+"/likes",
-						data: { access_token: accessToken},
 						crossDomain: true,
-						//dataType: "jsonp",
+						dataType: "json",
 						success: function(data) {
-							console.log('delete - success = ' + data);
+							//console.log('delete - success = ' + data);
 						}
 					})
 				}		
 			})
 	    }
+	    
 		window.onload=function(){
-
+			sobj.play();
 			$header.animate({'top':'0'},1000);
 			$necoLoader.fadeOut(1000,function(){
 				$necoContainer.append($sns)
 				$necoLoader.remove();
 				$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
-				console.log($necoContainer.children().length)
 				loaded = true;
 				
 				$sns.fadeIn();	
 				for (var i=0; i<max;i++){
-					$necoContainer.find('.image').eq(i).delay(i*30).animate({'opacity':'1'},300,'swing');
+					$necoContainer.find('.image').eq(i).delay(i*20).animate({'opacity':'1'},0,'swing');
 				}
+				
+				if (ios==false){
+					$thumbneco.live('mouseover',function(){
+						$(this).stop().transition({"-webkit-mask-size":"200px"}, 50, 'ease-out')
+							.css({ transform: "rotate(5deg)" }).closest('.image').stop().transition({
+								'background-color':'#f2f0f0',
+								'-webkit-border-top-left-radius':'110px','-moz-border-radius-topleft':'110px',
+								'-webkit-border-top-right-radius':'110px','-moz-border-radius-topright':'110px'
+						}, 50, 'ease-out');
+					}).live('mouseout',function(){
+						$(this).stop().transition({"-webkit-mask-size":"280px"}, 30, 'ease-out')
+							.css({ transform: "rotate(0deg)" }).closest('.image').stop().transition({
+								'background-color':'#ffffff',
+								'-webkit-border-top-left-radius':'10px','-moz-border-radius-topleft':'10px',
+								'-webkit-border-top-right-radius':'10px','-moz-border-radius-topright':'10px'
+						}, 30, 'ease-out');
+					});
+					
+					$('#icon').hover(function(){
+						$(this).fadeTo(0,0.8);
+						$('#me').fadeIn(200);
+					},function(){
+						$(this).fadeTo(0,1);
+						$('#me').fadeOut(200);
+					}).click(function(){
+						$('#me').fadeOut(0);
+					});
+					$('.description').hover(function(){
+						$(this).find('.thumbnail').css({'border':'1px solid #8c7e7e'}).end().find('.username').css({'color':'#8c7e7e'});
+					},function(){
+						$(this).find('.thumbnail').css({'border':'1px solid #ccc'}).end().find('.username').css({'color':'#444444'});
+					});
+				}
+			
+				$thumbneco.live('click', function(){
+					sobj.play();
+				})
+				$pageTop.show()
+				
 			});
 			
 			
-			$('.thumbneco').live('mouseover',function(){
-				//$(this).css({'border-bottom':'1px dotted #ddd','background-color':'#f0ebec'});
-				$(this).stop().transition({"-webkit-mask-size":"200px"}, 30, 'ease-out').css({ transform: "rotate(5deg)" }).closest('.image').stop().transition({
-					'background-color':'#f2f0f0',
-					'-webkit-border-top-left-radius':'110px','-moz-border-radius-topleft':'110px',
-					'-webkit-border-top-right-radius':'110px','-moz-border-radius-topright':'110px'
-				}, 30, 'ease-out');
-			}).live('mouseout',function(){
-				//$(this).css({'border-bottom':'1px dotted #ddd','background-color':'#ffffff'});
-				$(this).stop().transition({"-webkit-mask-size":"280px"}, 30, 'ease-out').css({ transform: "rotate(0deg)" }).closest('.image').stop().transition({
-					'background-color':'#ffffff',
-					'-webkit-border-top-left-radius':'0px','-moz-border-radius-topleft':'0px',
-					'-webkit-border-top-right-radius':'0px','-moz-border-radius-topright':'0px'
-				}, 30, 'ease-out');
-			})
-			$('.description').hover(function(){
-				$(this).find('.thumbnail').css({'border':'1px solid #8c7e7e'}).end().find('.username').css({'color':'#8c7e7e'});
-			},function(){
-				$(this).find('.thumbnail').css({'border':'1px solid #ccc'}).end().find('.username').css({'color':'#444444'});
-			});
-			$('#icon').hover(function(){
-				$(this).fadeTo(0,0.8);
-			},function(){
-				$(this).fadeTo(0,1);
-			})
 			//setupLogin(accessToken);
 		}
 

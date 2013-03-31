@@ -61,9 +61,11 @@
 		</div>
 	</footer>
 		<div id="sns" class="box image shadow masonry-brick">
+		<img id="me" src="images/me!.gif" width="70" height="50" />
 			<div id="fb-root"><div class="fb-like" data-href="http://necostagram.com/" data-send="false" data-layout="box_count" data-width="250" data-show-faces="true" data-font="tahoma"></div></div>
 			<a href="https://twitter.com/share" target="_blank"	 class="twitter-share-button" data-url="http://necostagram.com/" data-text="にゃーにゃーにゃーヾ(ΦωΦ=)" data-lang="en" data-hashtags="necostagram" data-count="vertical">ツイート</a>
 			<a href="http://instagram.com/necostagram" target="_blank"><img id="icon" src="images/icon.jpg" width="56" height="56" /></a>
+			
 	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 	</div>
 		<script>(function(d, s, id) {
@@ -74,10 +76,6 @@
 			  fjs.parentNode.insertBefore(js, fjs);
 			}(document, 'script', 'facebook-jssdk'));
 		</script>
-		
-	
-	
-
 </body>
 </html>
 
