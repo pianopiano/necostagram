@@ -20,14 +20,23 @@
 		,	necoTags=['ねこ','ネコ','猫','neco','neko']
 		,	pTopImgs=['images/j1.gif','images/j2.gif','images/j3.gif']
 		,	$sns = $('#sns')
-		,	ios = false;;
+		,	ios = false
+		,	snd=1
+		,	sndfmt='.mp3'
+		,	sndPath='sound/n';
 		
 		
 		var audio = new Audio();
-        if      (audio.canPlayType("audio/ogg") == 'maybe') { sobj = new Audio('sound/neco1.ogg'); }
-        else if (audio.canPlayType("audio/mp3") == 'maybe') { sobj = new Audio('sound/neco1.mp3'); }
-        else if (audio.canPlayType("audio/wav") == 'maybe') { sobj = new Audio('sound/neco1.wav'); }
+        if      (audio.canPlayType("audio/ogg") == 'maybe') { sndfmt = '.ogg'; }
+        else if (audio.canPlayType("audio/mp3") == 'maybe') { sndfmt = '.mp3'; }
+        else if (audio.canPlayType("audio/wav") == 'maybe') { sndfmt = '.wav'; }
 		audio=null;
+		
+		function sndPlay() {
+			snd += 1;
+			if (snd==7)snd=1;
+			(new Audio(sndPath+snd+sndfmt)).play();
+		}
 		
 		$sns.hide();
 		$('#login').hide();
@@ -135,7 +144,7 @@
 							IDs.unshift(user.id);
 							$necoContainer.prepend(content);
 							setTimeout(function(){
-								sobj.play();
+								sndPlay();
 								resizeHandler();
 								$necoContainer.find('.image').css({'opacity':'1'});
 							},1000);
@@ -242,7 +251,7 @@
 	    }
 	    
 		window.onload=function(){
-			sobj.play();
+			sndPlay();
 			$header.animate({'top':'0'},1000);
 			$necoLoader.fadeOut(1000,function(){
 				$necoContainer.append($sns)
@@ -289,7 +298,7 @@
 				}
 			
 				$thumbneco.live('click', function(){
-					sobj.play();
+					sndPlay();
 				})
 				$pageTop.show()
 				
