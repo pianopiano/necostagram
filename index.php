@@ -45,13 +45,12 @@
 	<script type="text/javascript" src="scripts/necostagram.js"></script>
 	<script type="text/javascript">
 		var accessToken = " <?php echo $at; ?>";
-		console.log(accessToken);
 	</script>
 </head>
 
 <body id="body">
 	<header id="header">
-		<h1><img src="images/logo.png" /></h1>
+		<h1><img src="images/logo.png" alt="necostagram" /></h1>
 		<div id="login">log-in</div>
 	</header>
 	<div id="necoContainer" class="clearfix" style="position: relative;">
@@ -66,7 +65,7 @@
 		<img id="me" src="images/me!.gif" width="70" height="50" />
 			<div id="fb-root"><div class="fb-like" data-href="http://necostagram.com/" data-send="false" data-layout="box_count" data-width="250" data-show-faces="true" data-font="tahoma"></div></div>
 			<a href="https://twitter.com/share" target="_blank"	 class="twitter-share-button" data-url="http://necostagram.com/" data-text="にゃーにゃーにゃーヾ(ΦωΦ=)" data-lang="en" data-hashtags="necostagram" data-count="vertical">ツイート</a>
-			<a href="http://instagram.com/necostagram" target="_blank"><img id="icon" src="images/icon.jpg" width="56" height="56" /></a>
+			<a href="http://instagram.com/necostagram" target="_blank"><img id="icon" src="images/icon.jpg" width="56" height="56" alt="necostagramのicon" /></a>
 			
 	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 	</div>
