@@ -19,9 +19,7 @@
     if ($json->access_token){
     	$at = (string) $json->access_token;
     }
-    //https://api.instagram.com/oauth/authorize/?client_id=f3af4e71702d492793ff32c61af1bbdc&redirect_uri=http://pianopiano.jp/neco.stagram/index.php&response_type=code&scope=likes
 ?>
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja" dir="ltr" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
@@ -44,8 +42,9 @@
 	<script type="text/javascript" src="scripts/jquery.transit.min.js"></script>
 	<script type="text/javascript" src="scripts/necostagram.js"></script>
 	<script type="text/javascript">
-		var accessToken = " <?php echo $at; ?>";
+		var accessToken = "<?php echo $at; ?>";
 	</script>
+
 </head>
 
 <body id="body">

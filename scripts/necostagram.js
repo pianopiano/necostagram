@@ -12,7 +12,7 @@
 		,	$thumbneco=$('.thumbneco')
 		,	$win=$(window)
 		,	num=0
-		,	max=39
+		,	max=40
 		,	_isAnimated=true
 		,	loaded=false
 		,	isJump=false
@@ -131,7 +131,7 @@
 												'<p class="username"><strong>'+user.username+'</strong></p>'+
 											'</a>'+
 											'<p class="caption">'+capsText+'</p>'+
-											//'<p class="like"></p>'+
+											'<p class="like"></p>'+
 										'</div>'+
 									'</div>';
 					if (max!=1){
@@ -203,13 +203,9 @@
 	    
 	    
 	    // login
-	    function setupLogin(accessToken){
-			$('#login').fadeIn().animate({'right':'20px'}, 500,'swing').click(function(){
-				var client_id = 'f39149070d2d4c5fb73cdddcaf00e0dd';
-				var redirect_uri = 'http://necostagram.com/';
-				location.href = 'https://api.instagram.com/oauth/authorize/?client_id='+client_id+'&redirect_uri='+redirect_uri+'&response_type=code&scope=likes';
-			});
-	
+	    function setupLike(accessToken){
+			
+			$('.like').show();
 			$('.like').live('click',function(){
 				var like = false;
 				var id = $(this).parent('.description').parent('.box').attr('id');
@@ -221,36 +217,31 @@
 					$(this).css({'background-image':src[0]+'like.png)'});
 					like = false;
 				}
-
+				var accessType = '';
 				if (like == true){
-					$.ajax({
-						type: 'POST',
-						url: "https://api.instagram.com/v1/media/"+id+"/likes",
-						data: { access_token: accessToken},
-						crossDomain: true,
-						dataType: "json",
-						beforeSend : function( xhr ){
-							xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-						},
-						success: function(data) {
-							//console.log('add - success = ' + data);
-						}
-					});
+					accessType = 'POST';
 				} else if (like == false) {
-					$.ajax({
-						url:"https://api.instagram.com/v1/media/"+id+"/likes?access_token="+accessToken,
-						type:"DELETE",
-						crossDomain: true,
-						dataType: "json",
-						success: function(data) {
-							//console.log('delete - success = ' + data);
-						}
-					})
-				}		
+					accessType = 'DELETE';
+				};
+				
+				
+				$.ajax({
+					type: 'POST',
+					url: "likes.php",
+					data: { access_token: accessToken, media_id: id ,type: accessType},
+					success: function(data, dataType) {
+						console.log('OK = '+data);
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+						alert('error = ' + errorThrown);
+					}
+				})	
+				
 			})
 	    }
 	    
 		window.onload=function(){
+			$('.like').hide();
 			sndPlay();
 			$header.animate({'top':'0'},1000);
 			$necoLoader.fadeOut(1000,function(){
@@ -304,8 +295,20 @@
 				
 			});
 			
+			if (accessToken==0){
+				//setupLogin()
+			} else {
+				setupLike(accessToken);
+			}
 			
-			//setupLogin(accessToken);
+			
+		}
+		function setupLogin() {
+			$('#login').fadeIn().animate({'right':'20px'}, 500,'swing').click(function(){
+				var client_id = 'f39149070d2d4c5fb73cdddcaf00e0dd';
+				var redirect_uri = 'http://necostagram.com/';
+				location.href = 'https://api.instagram.com/oauth/authorize/?client_id='+client_id+'&redirect_uri='+redirect_uri+'&response_type=code&scope=likes';
+			});
 		}
 
 		
