@@ -4,8 +4,9 @@
     $redirect_uri = "http://necostagram.com/";
     $token_uri = 'https://api.instagram.com/oauth/access_token';
     $at="0";
+    
     $post = "client_id=".$client_id."&client_secret=".$client_secret."&grant_type=authorization_code&redirect_uri=".$redirect_uri."&code=".$_GET["code"];
-     
+    
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $token_uri);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -14,10 +15,19 @@
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
      
     $json = json_decode(curl_exec($ch));
+    
     curl_close($ch);
+    
+    $username = '';
+    $profile_picture = '';
+    $id = '';
     
     if ($json->access_token){
     	$at = (string) $json->access_token;
+    	$username = (string) $json->user->username;
+		$profile_picture = (string) $json->user->profile_picture;
+		$id = (string) $json->user->id;
+		//echo "full_name=".$json->user->full_name;
     }
 ?>
 <!DOCTYPE html>
@@ -43,10 +53,11 @@
 	<script type="text/javascript" src="scripts/necostagram.js"></script>
 	<script type="text/javascript">
 		var accessToken = "<?php echo $at; ?>";
+		var $username = "<?php echo $username; ?>";
+		var $profile_picture = "<?php echo $profile_picture; ?>";
+		var $id = "<?php echo $id; ?>";
 	</script>
-
 </head>
-
 <body id="body">
 	<header id="header">
 		<h1><img src="images/logo.png" alt="necostagram" /></h1>
@@ -61,11 +72,12 @@
 		</div>
 	</footer>
 		<div id="sns" class="box image shadow masonry-brick">
+		<div id="snsinner">
 		<img id="me" src="images/me!.gif" width="70" height="50" />
 			<div id="fb-root"><div class="fb-like" data-href="http://necostagram.com/" data-send="false" data-layout="box_count" data-width="250" data-show-faces="true" data-font="tahoma"></div></div>
 			<a href="https://twitter.com/share" target="_blank"	 class="twitter-share-button" data-url="http://necostagram.com/" data-text="にゃーにゃーにゃーヾ(ΦωΦ=)" data-lang="en" data-hashtags="necostagram" data-count="vertical">ツイート</a>
 			<a href="http://instagram.com/necostagram" target="_blank"><img id="icon" src="images/icon.jpg" width="56" height="56" alt="necostagramのicon" /></a>
-			
+		</div><br /><div id="copyright">Copyright &copy; necostagram All Right Reserved.</div>
 	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 	</div>
 		<script>(function(d, s, id) {

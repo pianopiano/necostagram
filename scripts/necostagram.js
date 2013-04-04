@@ -11,13 +11,12 @@
 		,	$pageTop=$('#pageTop')
 		,	$thumbneco=$('.thumbneco')
 		,	$win=$(window)
-		,	num=0
 		,	max=40
 		,	_isAnimated=true
 		,	loaded=false
 		,	isJump=false
 		,	IDs=[]
-		,	necoTags=['ねこ','ネコ','猫','neco','neko']
+		,	necoTag = 'ねこ'
 		,	pTopImgs=['images/j1.gif','images/j2.gif','images/j3.gif']
 		,	$sns = $('#sns')
 		,	ios = false
@@ -40,17 +39,12 @@
 		
 		$sns.hide();
 		$('#login').hide();
-		
-		if ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1)
-			|| navigator.userAgent.indexOf('iPad') > 0
-			|| navigator.userAgent.indexOf('Android') > 0)
-		{
+		var agent = navigator.userAgent;
+		if ((agent.indexOf('iPhone') > 0 && agent.indexOf('iPad') == -1) || agent.indexOf('iPad') > 0 || agent.indexOf('Android') > 0) {
 			isIos();
 		} else {
 			isPc();
 		}
-
-		
 		
 		function isIos() {
 			ios = true;
@@ -80,13 +74,13 @@
 		$necoLoader.css({'left':$win.width()/2-30+'px','top':($win.height()/2)-100+'px'}).fadeIn(500);
 		
 		$win.resize(resizeHandler);
-		necoLoad(necoTags[num]);
+		necoLoad();
 		
 		
-		function necoLoad(hash){
+		function necoLoad(){
 			setWidth ();
 			$.ajax({
-				url: "https://api.instagram.com/v1/tags/"+hash+"/media/recent?client_id=f39149070d2d4c5fb73cdddcaf00e0dd",
+				url: "https://api.instagram.com/v1/tags/"+necoTag+"/media/recent?client_id=f39149070d2d4c5fb73cdddcaf00e0dd",
 				data:{count:max.toString()},
 				dataType: "jsonp",
 				error: function(jqXHR,textStatus,errorThrown){$necoContainer.text(textStatus);},
@@ -154,7 +148,7 @@
 			};
 			setTimeout(function(){
 				max=1;
-				necoLoad(necoTags[num]);
+				necoLoad();
 			},5000);
 		};
 		
@@ -165,6 +159,10 @@
 			if (($ww<950)&&($ww>720)){$necoContainer.width(720);} else 
 			if (($ww<720)&&($ww>480)){$necoContainer.width(480);} else 
 			if ($ww<480){$necoContainer.width(200);} else{};
+			
+			if ($('#profPict')){
+				$('#profPict').css({'left':($win.width()/2+$necoContainer.width()/2)-50+'px'});
+			}
 		}
 		
 		function resizeHandler(){
@@ -296,11 +294,17 @@
 			});
 			
 			if (accessToken==0){
-				//setupLogin()
+				setupLogin()
 			} else {
 				setupLike(accessToken);
 			}
 			
+			// user 
+			if ($profile_picture) {
+				$header.append('<img id="profPict" src="'+$profile_picture+'" width="30" height="30" />');
+				
+				$('#profPict').css({'position':'absolute','left':($win.width()/2+$necoContainer.width()/2)-50+'px','top':'9px','border':'2px solid #ccc'});
+			}
 			
 		}
 		function setupLogin() {

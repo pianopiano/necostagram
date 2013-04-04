@@ -214,12 +214,19 @@ h1 {
 #sns {
 	color: #8c7e7e;
 	width: 220px !important;
-	height: 60px !important;
+	height: 80px !important;
 	padding: 10px 0;
 	min-height: 60px !important;
 	background-color: #f2f0f0;
 	position: relative;
 	overflow: visible !important;
+}
+#snsinner {
+	height: 50px !important;
+}
+#copyright {
+	margin: 5px 0 5px 10px;
+	font-size: 9px;
 }
 #fb-root {
 	float: left;
