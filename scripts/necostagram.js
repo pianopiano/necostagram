@@ -38,15 +38,9 @@
 		
 		$sns.hide();
 		$('#login').hide();
-<<<<<<< HEAD
 		var agent = navigator.userAgent;
 		if ((agent.indexOf('iPhone') > 0 && agent.indexOf('iPad') == -1) || agent.indexOf('iPad') > 0 || agent.indexOf('Android') > 0) {
 			isIos();
-=======
-		var u_a = navigator.userAgent;
-		if ((u_a.indexOf('iPhone') > 0 && u_a.indexOf('iPad') == -1)|| u_a.indexOf('iPad') > 0|| u_a.indexOf('Android') > 0){
-			is_ios();
->>>>>>> 修正
 		} else {
 			is_pc();
 		}
@@ -79,15 +73,9 @@
 		$necoLoader.css({'left':$win.width()/2-30+'px','top':($win.height()/2)-100+'px'}).fadeIn(500);
 		$win.resize(resizeHandler);
 		necoLoad();
-		
-<<<<<<< HEAD
-		
+
 		function necoLoad(){
 			setWidth ();
-=======
-		function necoLoad(){
-			setWidth();
->>>>>>> 修正
 			$.ajax({
 				url: "https://api.instagram.com/v1/tags/"+necoTag+"/media/recent?client_id=f39149070d2d4c5fb73cdddcaf00e0dd",
 				data:{count:max.toString()},
@@ -307,7 +295,7 @@
 			});
 			
 			if (accessToken==0){
-				setupLogin()
+				//setupLogin()
 			} else {
 				setupLike(accessToken);
 			}
