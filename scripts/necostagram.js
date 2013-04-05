@@ -5,14 +5,13 @@
 (function(){
 	$(function(){
 		var sobj
-		,	$header=$('#header')
 		,	$necoLoader=$('#necoLoader')
 		,	$necoContainer=$('#necoContainer')
 		,	$pageTop=$('#pageTop')
 		,	$thumbneco=$('.thumbneco')
 		,	$win=$(window)
 		,	max=40
-		,	_isAnimated=true
+		,	_isAnimated=true	
 		,	loaded=false
 		,	isJump=false
 		,	IDs=[]
@@ -39,14 +38,20 @@
 		
 		$sns.hide();
 		$('#login').hide();
+<<<<<<< HEAD
 		var agent = navigator.userAgent;
 		if ((agent.indexOf('iPhone') > 0 && agent.indexOf('iPad') == -1) || agent.indexOf('iPad') > 0 || agent.indexOf('Android') > 0) {
 			isIos();
+=======
+		var u_a = navigator.userAgent;
+		if ((u_a.indexOf('iPhone') > 0 && u_a.indexOf('iPad') == -1)|| u_a.indexOf('iPad') > 0|| u_a.indexOf('Android') > 0){
+			is_ios();
+>>>>>>> 修正
 		} else {
-			isPc();
+			is_pc();
 		}
 		
-		function isIos() {
+		function is_ios() {
 			ios = true;
 			max=19;
 			if (navigator.userAgent.indexOf('iPad') > 0){
@@ -60,35 +65,42 @@
 				'transition-duration':'0s'
 			});
 			_isAnimated=false;
-		}
+		};
 		
-		function isPc() {
+		function is_pc() {
 			$thumbneco.css({
 				'-webkit-mask-image':'url(../images/circle.png)',
 				'-webkit-mask-size':'280px',
 				'-webkit-mask-repeat':'no-repeat',
 				'-webkit-mask-position':'center'
-			})
-		}
+			});
+		};
 		
 		$necoLoader.css({'left':$win.width()/2-30+'px','top':($win.height()/2)-100+'px'}).fadeIn(500);
-		
 		$win.resize(resizeHandler);
 		necoLoad();
 		
+<<<<<<< HEAD
 		
 		function necoLoad(){
 			setWidth ();
+=======
+		function necoLoad(){
+			setWidth();
+>>>>>>> 修正
 			$.ajax({
 				url: "https://api.instagram.com/v1/tags/"+necoTag+"/media/recent?client_id=f39149070d2d4c5fb73cdddcaf00e0dd",
 				data:{count:max.toString()},
 				dataType: "jsonp",
-				error: function(jqXHR,textStatus,errorThrown){$necoContainer.text(textStatus);},
+				error: function(jqXHR,textStatus,errorThrown){
+					alert('にゃーにゃーにゃー（'+textStatus+'）')
+					//$necoContainer.text(textStatus);
+				},
 				success: function(data,textStatus,jqXHR){
 					necoBuild(data);
 				}
 			});
-		}
+		};
 		
 		
 		function necoBuild(data){	
@@ -118,7 +130,8 @@
 				if (link!='#'||url!='#'){
 					var content=	'<div class="box image shadow" id="'+_data.id+'">'+
 										'<a href="'+link+'" target="_blank">'+
-										'<img class="thumbneco" src="'+url+'" width="200" /></a><br />'+
+											'<img class="thumbneco" src="'+url+'" width="200" />'+
+										'</a><br />'+
 										'<div class="description">'+
 											'<a href="http://instagram.com/'+user.username+'" target="_blank">'+
 												'<img class="thumbnail" src="'+user.profile_picture+'" width="30" />'+
@@ -202,12 +215,13 @@
 	    
 	    // login
 	    function setupLike(accessToken){
-			
 			$('.like').show();
 			$('.like').live('click',function(){
-				var like = false;
-				var id = $(this).parent('.description').parent('.box').attr('id');
-				var src = $(this).css('background-image').split('like');
+				var like=false
+				,	id=$(this).parent('.description').parent('.box').attr('id')
+				,	src = $(this).css('background-image').split('like')
+				,	accessType = '';
+				
 				if (src[1]=='.png)'){
 					$(this).css({'background-image':src[0]+'like_x.png)'});
 					like = true;
@@ -215,23 +229,22 @@
 					$(this).css({'background-image':src[0]+'like.png)'});
 					like = false;
 				}
-				var accessType = '';
+				
 				if (like == true){
 					accessType = 'POST';
 				} else if (like == false) {
 					accessType = 'DELETE';
 				};
 				
-				
 				$.ajax({
 					type: 'POST',
 					url: "likes.php",
 					data: { access_token: accessToken, media_id: id ,type: accessType},
 					success: function(data, dataType) {
-						console.log('OK = '+data);
+						console.log('success.data = '+data);
 					},
 					error: function(XMLHttpRequest, textStatus, errorThrown){
-						alert('error = ' + errorThrown);
+						alert('error.XMLHttpRequest = ' + errorThrown);
 					}
 				})	
 				
@@ -241,7 +254,7 @@
 		window.onload=function(){
 			$('.like').hide();
 			sndPlay();
-			$header.animate({'top':'0'},1000);
+			$('#header').animate({'top':'0'},1000);
 			$necoLoader.fadeOut(1000,function(){
 				$necoContainer.append($sns)
 				$necoLoader.remove();
@@ -314,8 +327,6 @@
 				location.href = 'https://api.instagram.com/oauth/authorize/?client_id='+client_id+'&redirect_uri='+redirect_uri+'&response_type=code&scope=likes';
 			});
 		}
-
-		
 	return this;
 	});
 }).call(this);

@@ -18,14 +18,16 @@
 		//curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 	}
 	
+	if (curl_errno($ch)){
+		echo curl_error($ch);
+	} else {
+		echo '$access_token='.$access_token.'$media_id='.$media_id.'$AJAX_TYPE='.$AJAX_TYPE;
+	}
+	
     //$result = curl_exec($ch);
     //curl_close($ch);
 	
-	
-	
-	if(isset($access_token)&&isset($media_id)&&isset($type)){
-		echo '$access_token='.$access_token.'$media_id='.$media_id.'$AJAX_TYPE='.$AJAX_TYPE;
-	} else {
-		echo 'The parameter of "request" is not found.';
-	}
+	//if(isset($access_token)&&isset($media_id)&&isset($type)){
+	//} else {
+	//}
 ?>
