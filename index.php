@@ -4,7 +4,6 @@
     $redirect_uri = "http://necostagram.com/";
     $token_uri = 'https://api.instagram.com/oauth/access_token';
     $at="0";
-    
     $post = "client_id=".$client_id."&client_secret=".$client_secret."&grant_type=authorization_code&redirect_uri=".$redirect_uri."&code=".$_GET["code"];
     
     $ch = curl_init();
@@ -13,9 +12,7 @@
     curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-     
     $json = json_decode(curl_exec($ch));
-    
     curl_close($ch);
     
     $username = '';
