@@ -9,7 +9,9 @@ body {
 }
 
 .image {
-	float: left;
+	position: absolute;
+	top: 0;
+	left: 0;
 	margin: 8px;
 	background-color: #ffffff;
 	overflow: hidden;
@@ -140,11 +142,11 @@ h1 {
 
 #necoContainer,
 .box {
-    -webkit-transition-duration: 0.3s;
-    -moz-transition-duration: 0.3s;
-    -ms-transition-duration: 0.3s;
-    -o-transition-duration: 0.3s;
-    transition-duration: 0.3s;
+    -webkit-transition-duration: 0.2s;
+    -moz-transition-duration: 0.2s;
+    -ms-transition-duration: 0.2s;
+    -o-transition-duration: 0.2s;
+    transition-duration: 0.2s;
 }
 
 #necoContainer {
@@ -211,6 +213,7 @@ h1 {
 	width: 0;
 	height: 0;
 }
+
 #sns {
 	color: #8c7e7e;
 	width: 220px !important;
@@ -221,20 +224,25 @@ h1 {
 	position: relative;
 	overflow: visible !important;
 }
+
 #snsinner {
 	height: 50px !important;
 }
+
 #copyright {
 	margin: 5px 0 5px 10px;
 	font-size: 9px;
 }
+
 #fb-root {
 	float: left;
 	margin: 0 8px;
 }
+
 .regular{
 	margin: 0 8px;
 }
+
 .twitter-share-button {
 	float: left;
 	margin: 0 10px;
@@ -257,8 +265,3 @@ h1 {
 	z-index: 5;
 	display: none;
 }
-
-
-
-
-

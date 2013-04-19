@@ -4,8 +4,7 @@
 
 (function(){
 	$(function(){
-		var sobj
-		,	$header=$('#header')
+		var $header=$('#header')
 		,	$necoLoader=$('#necoLoader')
 		,	$necoContainer=$('#necoContainer')
 		,	$pageTop=$('#pageTop')
@@ -24,9 +23,9 @@
 		,	sndfmt='.mp3'
 		,	sndPath='sound/n'
 		,	cookieValue=''
-		,	num=0;
+		//,	num=0
+		,	audio = new Audio();
 		
-		var audio = new Audio();
         if      (audio.canPlayType("audio/ogg") == 'maybe') { sndfmt = '.ogg'; }
         else if (audio.canPlayType("audio/mp3") == 'maybe') { sndfmt = '.mp3'; }
         else if (audio.canPlayType("audio/wav") == 'maybe') { sndfmt = '.wav'; }
@@ -35,24 +34,24 @@
 		function sndPlay() {
 			snd++;
 			if (snd==7)snd=1;
-			(new Audio(sndPath+snd+sndfmt)).play();
+			var s = new Audio(sndPath+snd+sndfmt);
+			s.volume = 0.25;
+			s.play();
 		}
 		
-		$sns.hide();
-		$('#login').hide();
 		var agent = navigator.userAgent;
-		if ((agent.indexOf('iPhone') > 0 && agent.indexOf('iPad') == -1) || agent.indexOf('iPad') > 0 || agent.indexOf('Android') > 0) {
-			isIos();
-		} else {
-			isPc();
-		}
+		if ((agent.indexOf('iPhone') > 0 && agent.indexOf('iPad') == -1) || agent.indexOf('iPad') > 0 || agent.indexOf('Android') > 0) isIos();
+		else isPc();
 		
+		if(navigator.userAgent.search(/Safari/) != -1){
+			if (navigator.userAgent.search(/Chrome/) != -1){
+				$('#copyright').css({'letter-spacing':'-0.1em'});
+			}
+		}
 		function isIos() {
 			ios = true;
-			max=19;
-			if (navigator.userAgent.indexOf('iPad') > 0){
-				max=40;
-			}
+			//max=15;
+			//if (navigator.userAgent.indexOf('iPad') > 0) max=40;
 			$('.box').css({
 				'-webkit-transition-duration':'0s',
 				'-moz-transition-duration':'0s',
@@ -61,7 +60,7 @@
 				'transition-duration':'0s'
 			});
 			_isAnimated=false;
-		}
+		};
 		
 		function isPc() {
 			$thumbneco.css({
@@ -69,15 +68,24 @@
 				'-webkit-mask-size':'280px',
 				'-webkit-mask-repeat':'no-repeat',
 				'-webkit-mask-position':'center'
-			})
-		}
+			});
+		};
 		
-		$necoLoader.css({'left':$win.width()/2-30+'px','top':($win.height()/2)-100+'px'}).fadeIn(500);
+		
+		
+		$sns.hide();
+		$('#login').hide();
+		$necoLoader.css({
+			'left':$win.width()/2-30+'px',
+			'top':$win.height()/2-100+'px'
+		}).fadeIn(500);
 		$win.resize(resizeHandler);
 		necoLoad();
 		
+		
+		
 		function necoLoad(){
-			setWidth ();
+			setWidth();
 			$.ajax({
 				url: "https://api.instagram.com/v1/tags/"+necoTag+"/media/recent?client_id=f39149070d2d4c5fb73cdddcaf00e0dd",
 				data:{count:max.toString()},
@@ -90,29 +98,27 @@
 		}
 		
 		function necoBuild(data){	
-			var _neco=data
-			,	i
-			,	len=0;
+			var i
+			,	len=0
+			,	user
+			,	link
+			,	url
+			,	capsText
+			,	_data;
+			
 			for (i=0; i < max; i++){
-				
-				var user
-				,	link
-				,	url
-				,	capsText
-				,	_data=_neco.data[i];
+				_data=data.data[i]
 				
 				try{url=_data.images.thumbnail.url;} 
-				catch(e){url='#'};
-				
+					catch(e){url='#'};
 				try{link=_data.link;} 
-				catch(e){link='#'};
-				link=link.replace("instagr.am","instagram.com");
-				
+					catch(e){link='#'};
 				try{user=_data.user;} 
-				catch(e){user={'profile_picture':'','username':''};};
-				
+					catch(e){user={'profile_picture':'','username':''};};
 				try{capsText=_data.caption.text;} 
-				catch(e){capsText='';};
+					catch(e){capsText='';};
+					
+				link=link.replace("instagr.am","instagram.com");
 				
 				if (link!='#'||url!='#'){
 					var content=	'<div class="box image shadow" id="'+_data.id+'">'+
@@ -129,11 +135,11 @@
 									'</div>';
 					if (max!=1){
 						len += 1;
-						num=len;
+						//num += 1;
 						$necoContainer.append(content);
 						IDs.push(user.id);
-						if (len==(max-1)){};
-					} else{
+						//if (len==(max-1)){};
+					} else {
 						if (IDs[0]!=user.id){
 							IDs.unshift(user.id);
 							$necoContainer.prepend(content);
@@ -146,52 +152,54 @@
 					};
 				};
 			};
+			
 			setTimeout(function(){
 				max=1;
 				necoLoad();
-			},7000);
+			},5000);
 		};
 		
 		function setWidth(){
-			$ww=$win.width();
+			$ww = $win.width();
 			if (($ww>=1200)){$necoContainer.width($ww)} else 
 			if (($ww<1200)&&($ww>960)){$necoContainer.width(960);} else 
 			if (($ww<950)&&($ww>720)){$necoContainer.width(720);} else 
 			if (($ww<720)&&($ww>480)){$necoContainer.width(480);} else 
 			if ($ww<480){$necoContainer.width(200);} else{};
-			
+			/*
 			if ($('#profPict')){
 				$('#profPict').css({'right':0+'px'});
 				$('#userContainer').css({'left':($win.width()/2+$necoContainer.width()/2)-15+'px'})
 			}
-			
+			*/
 		}
 		
 		function resizeHandler(){
 			setWidth();
 			if(!ios){
 				if(loaded)$necoContainer.masonry('destroy');
-				$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
 			}
+			$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
 		}
 		
 		
-		function mover(){$pageTop.find('img').attr('src',pTopImgs[1]);};
-		function mout(){$pageTop.find('img').attr('src',pTopImgs[0]);};
-		
-		setupPageTop();
+		function mOver(){$pageTop.find('img').attr('src',pTopImgs[1]);};
+		function mOut(){$pageTop.find('img').attr('src',pTopImgs[0]);};
 		function setupPageTop(){
 			isJump=false;
-			$pageTop.bind('mouseover',mover).bind('mouseout',mout).bind('click',necoJump).css({'right':'0','bottom':'-90px'}).find('img').attr('src',pTopImgs[0]);
-		}
+			$pageTop.bind('mouseover',mOver).bind('mouseout',mOut).bind('click',necoJump).css({'right':'0','bottom':'-90px'}).find('img').attr('src',pTopImgs[0]);
+		};
+		setupPageTop();
 		
 		function necoJump(){
 			isJump=true;
-			setTimeout(function(){$pageTop.find('img').attr('src',pTopImgs[2]);},200);
-			$pageTop.unbind('mouseover',mover).unbind('mouseout',mout).unbind('click',necoJump).stop().animate({'right':'100px','bottom':$win.height()+'px'},1500,'easeInOutExpo',setupPageTop);
+			setTimeout(function(){
+				$pageTop.find('img').attr('src',pTopImgs[2]);
+			},300);
+			$pageTop.unbind('mouseover',mOver).unbind('mouseout',mOut).unbind('click',necoJump).stop().animate({'right':'100px','bottom':$win.height()+'px'},1500,'easeInOutExpo',setupPageTop);
 			$('body,html').animate({scrollTop: 0},1200,'easeInOutExpo');
 			return false;
-		}
+		};
 		
 		$win.scroll(function(){
 	        if ($(this).scrollTop() > 500){
@@ -203,41 +211,33 @@
 	    
 	    
 		window.onload=function(){
-			$('.like').hide();
+			$('.image').css({
+				'top':'500px',
+				'left':$win.width()/2-200+'px'
+			})
+			//$('.like').hide();
+			$necoContainer.append($sns);
 			sndPlay();
-			$header.animate({'top':'0'},1000);
-			$necoLoader.fadeOut(1000,function(){
-				$necoContainer.append($sns)
+			$header.animate({'top':'0'},800);
+			$necoLoader.fadeOut(800,function(){
 				$necoLoader.remove();
 				$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
-				loaded = true;
-				var comNum=0;
-				$sns.fadeIn();
-				for (var i=0; i<max;i++){
-					$necoContainer.find('.image').eq(i).delay(i*20).animate({'opacity':'1'},0,'swing',function(){
-						comNum++;
-						if (comNum==num-1) {
-							addMouseEvents();
-						}
-						
-					});
-				}
-				
-			
-				$thumbneco.live('click', function(){
-					sndPlay();
-				})
+				$necoContainer.find('.image').css('opacity','1');
+				$sns.show();
 				$pageTop.show()
-				
+				addMouseEvents();
+				resizeHandler();
+				loaded = true;
 			});
 			
-			getCookie();
-			setCookie();
+			//getCookie();
+			//setCookie();
 			
 		}
+		
+		
 		function addMouseEvents() {
-			resizeHandler();
-			if (ios==false){
+			if (!ios){
 				$thumbneco.live('mouseover',function(){
 					$(this).stop().transition({"-webkit-mask-size":"200px"}, 50, 'ease-out')
 						.css({ transform: "rotate(5deg)" }).closest('.image').stop().transition({
@@ -269,8 +269,13 @@
 					$(this).find('.thumbnail').css({'border':'1px solid #ccc'}).end().find('.username').css({'color':'#444444'});
 				});
 			}
+			$thumbneco.live('click', function(){
+				sndPlay();
+			})
 		}
-	    // login
+		
+		
+	    // login =================================================================
 	    function setupLike($accessToken){
 			$('.like').show().live('click',function(){
 				var like = false;

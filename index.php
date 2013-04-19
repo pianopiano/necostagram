@@ -1,9 +1,10 @@
 <?php
-    $client_id = "f39149070d2d4c5fb73cdddcaf00e0dd";
-    $client_secret = "7f29987013714e51ad7b6ce43b0533ed";
+    $client_id = "28977a1a96d94967a2cb14709492c46d";
+    $client_secret = "7440a71b6098430cb58f02868df40e1f";
     $redirect_uri = "http://necostagram.com/";
     $token_uri = 'https://api.instagram.com/oauth/access_token';
     $at="0";
+    
     $post = "client_id=".$client_id."&client_secret=".$client_secret."&grant_type=authorization_code&redirect_uri=".$redirect_uri."&code=".$_GET["code"];
     
     $ch = curl_init();
@@ -12,7 +13,9 @@
     curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+     
     $json = json_decode(curl_exec($ch));
+    
     curl_close($ch);
     
     $username = '';
@@ -43,17 +46,6 @@
 	<meta name="description" content="ヾ(ΦωΦ=)にゃにゃにゃにゃにゃにゃにゃにゃにゃんーにゃーにゃーにゃーにゃーにゃーにゃーにゃーにゃーにゃーにゃーにゃーー">
 	<title>necostagram</title>
 	<link rel="stylesheet" href="styles/necostagram.css" type="text/css" />
-	<script type="text/javascript" src="scripts/jquery-1.8.3.min.js"></script>
-	<script type="text/javascript" src="scripts/jquery.easing.js"></script>
-	<script type="text/javascript" src="scripts/jquery.masonry.min.js"></script>
-	<script type="text/javascript" src="scripts/jquery.transit.min.js"></script>
-	<script type="text/javascript" src="scripts/necostagram.js"></script>
-	<script type="text/javascript">
-		var accessToken = "<?php echo $at; ?>";
-		var $username = "<?php echo $username; ?>";
-		var $profile_picture = "<?php echo $profile_picture; ?>";
-		var $id = "<?php echo $id; ?>";
-	</script>
 </head>
 <body id="body">
 	<header id="header">
@@ -75,8 +67,29 @@
 			<a href="https://twitter.com/share" target="_blank"	 class="twitter-share-button" data-url="http://necostagram.com/" data-text="にゃーにゃーにゃーヾ(ΦωΦ=)" data-lang="en" data-hashtags="necostagram" data-count="vertical">ツイート</a>
 			<a href="http://instagram.com/necostagram" target="_blank"><img id="icon" src="images/icon.jpg" width="56" height="56" alt="necostagramのicon" /></a>
 		</div><br /><div id="copyright">Copyright &copy; necostagram All Right Reserved.</div>
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	
 	</div>
+	
+	<script type="text/javascript" src="scripts/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="scripts/jquery.easing.js"></script>
+	<script type="text/javascript" src="scripts/jquery.masonry.min.js"></script>
+	<script type="text/javascript" src="scripts/jquery.transit.min.js"></script>
+	<script type="text/javascript" src="scripts/necostagram.js"></script>
+	<script type="text/javascript">
+		var $accessToken = "<?php echo $at; ?>";
+		var $username = "<?php echo $username; ?>";
+		var $profile_picture = "<?php echo $profile_picture; ?>";
+		var $id = "<?php echo $id; ?>";
+		//var cookieName = "neco_token_id";
+		//var period = 1;
+		//var expires = new Date(new Date().getTime() + (60 * 60 * 24 * 1000 * period)).toGMTString();
+		//if ($username){
+			//var data = $accessToken+'/'+$username;
+			//document.cookie = 'neco_token_id' + "=" + escape(data) + "; expires=" + expires;
+		//} else {
+		//}
+	</script>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 		<script>(function(d, s, id) {
 			  var js, fjs = d.getElementsByTagName(s)[0];
 			  if (d.getElementById(id)) return;
