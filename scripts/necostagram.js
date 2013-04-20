@@ -47,6 +47,9 @@
 			if (navigator.userAgent.search(/Chrome/) != -1){
 				$('#copyright').css({'letter-spacing':'-0.1em'});
 			}
+		} else if (navigator.userAgent.search(/Firefox/) != -1) {
+			$('#fb-root').empty().remove();
+			$('#snsinner').append('<iframe src="//www.facebook.com/plugins/like.php?locale=en_US&amp;href=http%3A%2F%2Fnecostagram.com&amp;send=false&amp;layout=box_count&amp;width=60&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=156418954419215" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:60px; height:90px;" allowTransparency="true"></iframe>')
 		}
 		function isIos() {
 			ios = true;
