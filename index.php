@@ -63,7 +63,7 @@
 		<div id="sns" class="box image shadow masonry-brick">
 		<div id="snsinner">
 		<img id="me" src="images/me!.gif" width="70" height="50" />
-			<div id="fb-root"><div class="fb-like" data-href="http://necostagram.com/" data-send="false" data-layout="box_count" data-width="250" data-show-faces="true" data-font="tahoma"></div></div>
+			<iframe src="//www.facebook.com/plugins/like.php?locale=en_US&amp;href=http%3A%2F%2Fnecostagram.com&amp;send=false&amp;layout=box_count&amp;width=60&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=156418954419215" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:54px; height:90px;" allowTransparency="true"></iframe>
 			<a href="https://twitter.com/share" target="_blank"	 class="twitter-share-button" data-url="http://necostagram.com/" data-text="にゃーにゃーにゃーヾ(ΦωΦ=)" data-lang="en" data-hashtags="necostagram" data-count="vertical">ツイート</a>
 			<a href="http://instagram.com/necostagram" target="_blank"><img id="icon" src="images/icon.jpg" width="56" height="56" alt="necostagramのicon" /></a>
 		</div><br /><div id="copyright">Copyright &copy; necostagram All Right Reserved.</div>
@@ -90,14 +90,7 @@
 		//}
 	</script>
 		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-		<script>(function(d, s, id) {
-			  var js, fjs = d.getElementsByTagName(s)[0];
-			  if (d.getElementById(id)) return;
-			  js = d.createElement(s); js.id = id;
-			  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-			  fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'facebook-jssdk'));
-		</script>
+		
 </body>
 </html>
 
