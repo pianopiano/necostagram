@@ -119,9 +119,13 @@
 			
 			for (i=0; i < max; i++){
 				_data=data.data[i]
-				
-				try{url=_data.images.thumbnail.url;} 
-					catch(e){url='#'};
+				try{
+					if (_data.images.thumbnail.url==undefined){
+						url=_data.images.thumbnail;
+					} else {
+						url=_data.images.thumbnail.url;
+					}
+				}catch(e){url='#'};
 				try{link=_data.link;} 
 					catch(e){link='#'};
 				try{user=_data.user;} 
@@ -130,11 +134,11 @@
 					catch(e){capsText='';};
 					
 				link=link.replace("instagr.am","instagram.com");
-				
 				if (link!='#'||url!='#'){
 					var content=	'<div class="box image shadow" id="'+_data.id+'">'+
 										'<a href="'+link+'" target="_blank">'+
-										'<img class="thumbneco" src="'+url+'" width="200" /></a><br />'+
+											'<img class="thumbneco" src="'+url+'" width="200" />'+
+										'</a><br />'+
 										'<div class="description">'+
 											'<a href="http://instagram.com/'+user.username+'" target="_blank">'+
 												'<img class="thumbnail" src="'+user.profile_picture+'" width="30" />'+
