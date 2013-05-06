@@ -24,25 +24,8 @@
 		,	sndPath='sound/n'
 		,	cookieValue=''
 		//,	num=0
-<<<<<<< HEAD
 		,	ie=false;
 		
-=======
-		//,	audio = new Audio();
-		
-        //if      (audio.canPlayType("audio/ogg") == 'maybe') { sndfmt = '.ogg'; }
-        //else if (audio.canPlayType("audio/mp3") == 'maybe') { sndfmt = '.mp3'; }
-        //else if (audio.canPlayType("audio/wav") == 'maybe') { sndfmt = '.wav'; }
-		//audio=null;
-		
-		function sndPlay() {
-			//snd++;
-			//if (snd==7)snd=1;
-			//var s = new Audio(sndPath+snd+sndfmt);
-			//s.volume = 0.25;
-			//s.play();
-		}
->>>>>>> 鳴き声消した
 		
 		var agent = navigator.userAgent;
 		if ((agent.indexOf('iPhone') > 0 && agent.indexOf('iPad') == -1) || agent.indexOf('iPad') > 0 || agent.indexOf('Android') > 0) isIos();
@@ -52,42 +35,30 @@
 			if (navigator.userAgent.search(/Chrome/) != -1){
 				$('#copyright').css({'letter-spacing':'-0.1em'});
 			}
-<<<<<<< HEAD
 		} else if (navigator.userAgent.search(/MSIE 10/) != -1||navigator.userAgent.search(/MSIE 9/) != -1||navigator.userAgent.search(/MSIE 8/) != -1) {
 			ie = true;
 		}
 		
 		if (!ie) {
-			var	audio = new Audio();
-	        if      (audio.canPlayType("audio/ogg") == 'maybe') { sndfmt = '.ogg'; }
-	        else if (audio.canPlayType("audio/mp3") == 'maybe') { sndfmt = '.mp3'; }
-	        else if (audio.canPlayType("audio/wav") == 'maybe') { sndfmt = '.wav'; }
-			audio=null;
+			//var	audio = new Audio();
+	        //if      (audio.canPlayType("audio/ogg") == 'maybe') { sndfmt = '.ogg'; }
+	        //else if (audio.canPlayType("audio/mp3") == 'maybe') { sndfmt = '.mp3'; }
+	        //else if (audio.canPlayType("audio/wav") == 'maybe') { sndfmt = '.wav'; }
+			//audio=null;
 		}
 		
 		function sndPlay() {
 			if (!ie) {
-				snd++;
-				if (snd==7)snd=1;
-				var s = new Audio(sndPath+snd+sndfmt);
-				s.volume = 0.25;
-				s.play();
+				//snd++;
+				//if (snd==7)snd=1;
+				//var s = new Audio(sndPath+snd+sndfmt);
+				//s.volume = 0.25;
+				//s.play();
 			}
 		}
 		
 		
 		
-=======
-		} else if (navigator.userAgent.search(/Firefox/) != -1 || navigator.userAgent.search(/iPhone/) != -1 || navigator.userAgent.search(/iPad/) != -1 || navigator.userAgent.search(/Android/) != -1) {
-			chengeFBBtn();
-		};
-		
-		function chengeFBBtn() {
-			$('#fb-root').empty().remove();
-			$('#snsinner').append('<iframe src="//www.facebook.com/plugins/like.php?locale=en_US&amp;href=http%3A%2F%2Fnecostagram.com&amp;send=false&amp;layout=box_count&amp;width=60&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=156418954419215" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:60px; height:90px;" allowTransparency="true"></iframe>')
-		}
-		
->>>>>>> 鳴き声消した
 		function isIos() {
 			ios = true;
 			//max=15;
@@ -222,8 +193,8 @@
 			setWidth();
 			if(!ios){
 				if(loaded)$necoContainer.masonry('destroy');
-				$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
 			}
+			$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
 		}
 		
 		
