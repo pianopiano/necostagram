@@ -23,8 +23,8 @@
 		,	sndfmt='.mp3'
 		,	sndPath='sound/n'
 		,	cookieValue=''
-		//,	num=0
-		,	ie=false;
+		,	ie=false
+		,	contents='';
 		
 		
 		var agent = navigator.userAgent;
@@ -57,12 +57,8 @@
 			}
 		}
 		
-		
-		
 		function isIos() {
 			ios = true;
-			//max=15;
-			//if (navigator.userAgent.indexOf('iPad') > 0) max=40;
 			$('.box').css({
 				'-webkit-transition-duration':'0s',
 				'-moz-transition-duration':'0s',
@@ -82,8 +78,6 @@
 			});
 		};
 		
-		
-		
 		$sns.hide();
 		$('#login').hide();
 		$necoLoader.css({
@@ -92,8 +86,6 @@
 		}).fadeIn(500);
 		$win.resize(resizeHandler);
 		necoLoad();
-		
-		
 		
 		function necoLoad(){
 			setWidth();
@@ -108,9 +100,9 @@
 			});
 		}
 		
-		function necoBuild(data){	
+		function necoBuild(data){
 			var i
-			,	len=0
+			,	len=data.data.length
 			,	user
 			,	link
 			,	url
@@ -132,7 +124,6 @@
 					catch(e){user={'profile_picture':'','username':''};};
 				try{capsText=_data.caption.text;} 
 					catch(e){capsText='';};
-					
 				link=link.replace("instagr.am","instagram.com");
 				if (link!='#'||url!='#'){
 					var content=	'<div class="box image shadow" id="'+_data.id+'">'+
@@ -148,12 +139,10 @@
 											//'<p class="like"></p>'+
 										'</div>'+
 									'</div>';
+					contents += content;
 					if (max!=1){
-						len += 1;
-						//num += 1;
-						$necoContainer.append(content);
+						if (i==len-1) $necoContainer.append(contents);
 						IDs.push(user.id);
-						//if (len==(max-1)){};
 					} else {
 						if (IDs[0]!=user.id){
 							IDs.unshift(user.id);
@@ -247,6 +236,7 @@
 			
 			//getCookie();
 			//setCookie();
+			console.log('---'+contents)
 			
 		}
 		
