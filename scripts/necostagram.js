@@ -2,199 +2,383 @@
 *	ヾ(ΦωΦ=)にゃーにゃーにゃー
 */
 
-(function() {
-	var $header,$necoLoader,$necoContainer,max=39,dev='pc',isAnimated=true,sound;
-	var accessToken = $('#access_token').html();
-	$('#access_token').empty().remove();
-	console.log(accessToken)
-	window.onload = function() {
-		$header.animate({'top':'0'},1000);
-		$necoLoader.fadeOut(1000, function(){
-			$necoLoader.remove();
-			$necoContainer.masonry({itemSelector:'.box',isAnimated:true});
-
-			for (var i=0; i<max;i++){
-				$necoContainer.find('.image').eq(i).delay(i*30).animate({'opacity':'1'},300,'swing');
-			}
-			
-			sound.play();
-		});
-		//後ほど実装
-		//setupLogin();
-	}
-	
-	function setupLogin(){
-		$('#login').animate({'right':'20px'}, 500,'swing').click(function(){
-			var client_id = 'f3af4e71702d492793ff32c61af1bbdc';
-			var redirect_uri = 'http://pianopiano.jp/neco.stagram/index.php';
-			location.href = 'https://api.instagram.com/oauth/authorize/?client_id='+client_id+'&redirect_uri='+redirect_uri+'&response_type=code&scope=likes';
-		});
+(function(){
+	$(function(){
+		var $header=$('#header')
+		,	$necoLoader=$('#necoLoader')
+		,	$necoContainer=$('#necoContainer')
+		,	$pageTop=$('#pageTop')
+		,	$thumbneco=$('.thumbneco')
+		,	$win=$(window)
+		,	$sns = $('#sns')
+		,	max=40
+		,	_isAnimated=true
+		,	loaded=false
+		,	isJump=false
+		,	ios = false
+		,	IDs=[]
+		,	necoTag = 'ねこ'
+		,	pTopImgs=['images/j1.gif','images/j2.gif','images/j3.gif']
+		,	snd=1
+		,	sndfmt='.mp3'
+		,	sndPath='sound/n'
+		,	cookieValue=''
+		,	ie=false
+		,	contents='';
 		
-		$('.like').live('click',function(){
-			var like = false;
-			var id = $(this).parent('.description').parent('.box').attr('id');
-			var src = $(this).css('background-image').split('like');
-
-			if (src[1]=='.png)'){
-				$(this).css({'background-image':src[0]+'like_x.png)'});
-				like = true;
-			} else if (src[1]=='_x.png)') {
-				$(this).css({'background-image':src[0]+'like.png)'});
-				console.log(src[0]+'like'+src[1]);
-				like = false;
-			}
-			if (like == true){
-				$.ajax({
-					type: 'POST',
-					url: "https://api.instagram.com/v1/media/"+id+"/likes",
-					data: { access_token: accessToken},
-					success: function(data) {
-						//console(data);
-					}
-				});
-			} else if (like == false) {
-				// うまくいかない
-				$.ajax({
-					type:"DELETE",
-					data: { access_token: accessToken},
-					url:"https://api.instagram.com/v1/media/"+id+"/likes",
-					success: function(data) {
-						
-					}
-				})
-			}		
-		})
-	}
 		
-	$(function() {
-		sound = new Audio('sound/neco.mp4');
-		var num = 0,len = 0,IDs = [],necoTags = ['ねこ','ネコ','猫','neco','neko'],$win = $(window);
-		/*
-		if (navigator.userAgent.indexOf('iPhone') > 0){
-		} else if (navigator.userAgent.indexOf('iPad') == -1){
+		var agent = navigator.userAgent;
+		if ((agent.indexOf('iPhone') > 0 && agent.indexOf('iPad') == -1) || agent.indexOf('iPad') > 0 || agent.indexOf('Android') > 0) isIos();
+		else isPc();
+		
+		if(navigator.userAgent.search(/Safari/) != -1){
+			if (navigator.userAgent.search(/Chrome/) != -1) $('#copyright').css({'letter-spacing':'-0.1em'});
+		} else if (navigator.userAgent.search(/MSIE 10/) != -1||navigator.userAgent.search(/MSIE 9/) != -1||navigator.userAgent.search(/MSIE 8/) != -1) {
+			ie = true;
 		}
-		*/
-		$header = $('#header');
-		$necoLoader = $('#necoLoader');
-		$necoContainer = $('#necoContainer');
-		$necoLoader.css({'left':$win.width()/2-30+'px','top':($win.height()/2)-100+'px'}).fadeIn(500);
 		
+		function isIos() {
+			ios = true;
+			$('.box').css({
+				'-webkit-transition-duration':'0s',
+				'-moz-transition-duration':'0s',
+				'-ms-transition-duration':'0s',
+				'-o-transition-duration':'0s',
+				'transition-duration':'0s'
+			});
+			_isAnimated=false;
+		};
+		
+		function isPc() {
+			$thumbneco.css({
+				'-webkit-mask-image':'url(../images/circle.png)',
+				'-webkit-mask-size':'280px',
+				'-webkit-mask-repeat':'no-repeat',
+				'-webkit-mask-position':'center'
+			});
+		};
+		
+		$sns.hide();
+		$('#login').hide();
+		$necoLoader.css({
+			'left':$win.width()/2-30+'px',
+			'top':$win.height()/2-100+'px'
+		}).fadeIn(500);
 		$win.resize(resizeHandler);
-		necoLoad(necoTags[num]);
+		necoLoad();
 		
-		
-		function necoLoad(hash){
-			setWidth ();
+		function necoLoad(){
+			setWidth();
 			$.ajax({
-				url: "https://api.instagram.com/v1/tags/"+hash+"/media/recent",
-				data: { access_token: accessToken, count:max.toString() },
+				url: "https://api.instagram.com/v1/tags/"+necoTag+"/media/recent?client_id=f39149070d2d4c5fb73cdddcaf00e0dd",
+				data:{count:max.toString()},
 				dataType: "jsonp",
-				error: function(jqXHR, textStatus, errorThrown) {$necoContainer.text(textStatus);},
-				success: function(data, textStatus, jqXHR) {
-					necoBuild(data, textStatus, jqXHR);
+				error: function(jqXHR,textStatus,errorThrown){$necoContainer.text(textStatus);},
+				success: function(data,textStatus,jqXHR){
+					necoBuild(data);
 				}
 			});
 		}
 		
-		
-		function necoBuild(data, textStatus, jqXHR) {			
-			var _neco = data;
-			//console.log(data.data[0])
-			for (var i = 0; i < max; i++) {
-				//console.log(i)
-				//console.log(data.data[i].id)
-				var d = _neco.data,capsText;
-				var user,link,url;
-				try {url = _neco.data[i].images.thumbnail.url;} 
-				catch(e) {url = '#'};
-				
-				try {link = _neco.data[i].link;} 
-				catch(e){link = '#'};
-				
-				try {user = _neco.data[i].user;} 
-				catch(e) {user = {'profile_picture':'','username':''};};
-				
-				try {capsText = _neco.data[i].caption.text;} 
-				catch(e) {capsText = '';};
-				
-				if (link!='#'||url!='#') {
-					var content = 	'<div class="box image shadow" id="'+data.data[i].id+'">'+
-										'<a href="'+link+'" target="_blank"><img src="'+url+'" width="200" /></a><br />'+
+		function necoBuild(data){
+			var i
+			,	len=data.data.length
+			,	user
+			,	link
+			,	url
+			,	capsText
+			,	_data;
+			
+			for (i=0; i < max; i++){
+				_data=data.data[i]
+				try{
+					if (_data.images.thumbnail.url==undefined){
+						url=_data.images.thumbnail;
+					} else {
+						url=_data.images.thumbnail.url;
+					}
+				}catch(e){url='#'};
+				try{link=_data.link;} 
+					catch(e){link='#'};
+				try{user=_data.user;} 
+					catch(e){user={'profile_picture':'','username':''};};
+				try{capsText=_data.caption.text;} 
+					catch(e){capsText='';};
+				link=link.replace("instagr.am","instagram.com");
+				if (link!='#'||url!='#'){
+					var content=	'<div class="box image shadow" id="'+_data.id+'">'+
+										'<a href="'+link+'" target="_blank">'+
+											'<img class="thumbneco" src="'+url+'" width="200" />'+
+										'</a><br />'+
 										'<div class="description">'+
 											'<a href="http://instagram.com/'+user.username+'" target="_blank">'+
 												'<img class="thumbnail" src="'+user.profile_picture+'" width="30" />'+
 												'<p class="username"><strong>'+user.username+'</strong></p>'+
 											'</a>'+
 											'<p class="caption">'+capsText+'</p>'+
-											'<p class="like"></p>'+
-											//'<p class="like">'+_neco.data[i].likes.count+'</p>'+
+											//'<p class="like"></p>'+
 										'</div>'+
 									'</div>';
-														
+					contents += content;
 					if (max!=1){
-						len += 1;
-						$necoContainer.append(content);
+						if (i==len-1) $necoContainer.append(contents);
 						IDs.push(user.id);
-						if (len==(max-1)){};
 					} else {
 						if (IDs[0]!=user.id){
-							sound.play();
 							IDs.unshift(user.id);
 							$necoContainer.prepend(content);
 							setTimeout(function(){
 								resizeHandler();
 								$necoContainer.find('.image').css({'opacity':'1'});
-							}, 1000);
+							},1000);
 						};
 					};
 				};
 			};
+			
 			setTimeout(function(){
 				max=1;
-				necoLoad(necoTags[num]);
-			}, 5000);
+				necoLoad();
+			},5000);
 		};
 		
 		function setWidth(){
 			$ww = $win.width();
-			if (($ww>=1200)){$necoContainer.width($ww)} 
-			else if (($ww<1200)&&($ww>960)){$necoContainer.width(960);} 
-			else if (($ww<950)&&($ww>720)){$necoContainer.width(720);} 
-			else if (($ww<720)&&($ww>480)){$necoContainer.width(480);} 
-			else if ($ww<480){$necoContainer.width(200);}
-			else {}			
+			if (($ww>=1200)){$necoContainer.width($ww)} else 
+			if (($ww<1200)&&($ww>960)){$necoContainer.width(960);} else 
+			if (($ww<950)&&($ww>720)){$necoContainer.width(720);} else 
+			if (($ww<720)&&($ww>480)){$necoContainer.width(480);} else 
+			if ($ww<480){$necoContainer.width(200);} else{};
+			/*
+			if ($('#profPict')){
+				$('#profPict').css({'right':0+'px'});
+				$('#userContainer').css({'left':($win.width()/2+$necoContainer.width()/2)-15+'px'})
+			}
+			*/
 		}
 		
-		function resizeHandler() {
+		function resizeHandler(){
 			setWidth();
-			$necoContainer.masonry('destroy');
-			$necoContainer.masonry({itemSelector : '.box',isAnimated : true});
+			if(!ios){
+				if(loaded)$necoContainer.masonry('destroy');
+			}
+			$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
 		}
 		
-		var $pageTop = $('#pageTop'),isJump = false,pTopImgs = ['images/j1.gif','images/j2.gif','images/j3.gif'];
-		function mover(){$pageTop.find('img').attr('src',pTopImgs[1]);};
-		function mout() {$pageTop.find('img').attr('src',pTopImgs[0]);};
-		setupPageTop();
+		
+		function mOver(){$pageTop.find('img').attr('src',pTopImgs[1]);};
+		function mOut(){$pageTop.find('img').attr('src',pTopImgs[0]);};
 		function setupPageTop(){
-			isJump = false;
-			$pageTop.find('img').attr('src',pTopImgs[0]);
-			$pageTop.bind('mouseover', mover).bind('mouseout', mout).bind('click', necoJump).css({'right':'-100','bottom':'-90px'});
-		}
+			isJump=false;
+			$pageTop.bind('mouseover',mOver).bind('mouseout',mOut).bind('click',necoJump).css({'right':'0','bottom':'-90px'}).find('img').attr('src',pTopImgs[0]);
+		};
+		setupPageTop();
 		
 		function necoJump(){
-			isJump = true;
-			setTimeout(function(){$pageTop.find('img').attr('src',pTopImgs[2]);}, 200);
-			$pageTop.unbind('mouseover', mover).unbind('mouseout', mout).unbind('click',necoJump).stop().animate({'right':'-100px','bottom':$win.height()+'px'}, 1500,'easeInOutExpo',setupPageTop);
-			$('body,html').animate({scrollTop: 0}, 1200,'easeInOutExpo');
+			isJump=true;
+			setTimeout(function(){
+				$pageTop.find('img').attr('src',pTopImgs[2]);
+			},300);
+			$pageTop.unbind('mouseover',mOver).unbind('mouseout',mOut).unbind('click',necoJump).stop().animate({'right':'100px','bottom':$win.height()+'px'},1500,'easeInOutExpo',setupPageTop);
+			$('body,html').animate({scrollTop: 0},1200,'easeInOutExpo');
 			return false;
-		}
+		};
 		
-		$win.scroll(function() {
-	        if ($(this).scrollTop() > 1000) {
-	            if(!isJump)$pageTop.stop().animate({'bottom':'0px'},200);
-	        } else {
-	            if(!isJump)$pageTop.stop().animate({'bottom':'-90px'},200);
+		$win.scroll(function(){
+	        if ($(this).scrollTop() > 500){
+	            if(!isJump)$pageTop.stop().animate({'bottom':'0px'},300);
+	        } else{
+	            if(!isJump)$pageTop.stop().animate({'bottom':'-80px'},300);
 	        }
 	    });
+	    
+	    
+		window.onload=function(){
+			$('.image').css({
+				'top':'500px',
+				'left':$win.width()/2-200+'px'
+			})
+			//$('.like').hide();
+			$necoContainer.append($sns);
+			$header.animate({'top':'0'},800);
+			$necoLoader.fadeOut(800,function(){
+				$necoLoader.remove();
+				$necoContainer.masonry({itemSelector:'.box',isAnimated:_isAnimated});
+				$necoContainer.find('.image').css('opacity','1');
+				$sns.show();
+				$pageTop.show()
+				addMouseEvents();
+				resizeHandler();
+				loaded = true;
+			});
+			
+			//getCookie();
+			//setCookie();
+		}
+		
+		
+		function addMouseEvents() {
+			if (!ios){
+				$thumbneco.live('mouseover',function(){
+					$(this).stop().transition({"-webkit-mask-size":"200px"}, 50, 'ease-out')
+						.css({ transform: "rotate(5deg)" }).closest('.image').stop().transition({
+							'background-color':'#f2f0f0',
+							'-webkit-border-top-left-radius':'110px','-moz-border-radius-topleft':'110px',
+							'-webkit-border-top-right-radius':'110px','-moz-border-radius-topright':'110px'
+					}, 50, 'ease-out');
+				}).live('mouseout',function(){
+					$(this).stop().transition({"-webkit-mask-size":"280px"}, 30, 'ease-out')
+						.css({ transform: "rotate(0deg)" }).closest('.image').stop().transition({
+							'background-color':'#ffffff',
+							'-webkit-border-top-left-radius':'10px','-moz-border-radius-topleft':'10px',
+							'-webkit-border-top-right-radius':'10px','-moz-border-radius-topright':'10px'
+					}, 30, 'ease-out');
+				});
+				
+				$('#icon').hover(function(){
+					$(this).fadeTo(0,0.8);
+					$('#me').fadeIn(200);
+				},function(){
+					$(this).fadeTo(0,1);
+					$('#me').fadeOut(200);
+				}).click(function(){
+					$('#me').fadeOut(0);
+				});
+				$('.description').hover(function(){
+					$(this).find('.thumbnail').css({'border':'1px solid #8c7e7e'}).end().find('.username').css({'color':'#8c7e7e'});
+				},function(){
+					$(this).find('.thumbnail').css({'border':'1px solid #ccc'}).end().find('.username').css({'color':'#444444'});
+				});
+			}
+		}
+		
+		
+	    // login =================================================================
+	    function setupLike($accessToken){
+			$('.like').show().live('click',function(){
+				var like = false;
+				var id = $(this).parent('.description').parent('.box').attr('id');
+				var src = $(this).css('background-image').split('like');
+				if (src[1]=='.png)'){
+					$(this).css({'background-image':src[0]+'like_x.png)'});
+					like = true;
+				} else if (src[1]=='_x.png)') {
+					$(this).css({'background-image':src[0]+'like.png)'});
+					like = false;
+				}
+				var accessType = '';
+				if (like == true){
+					accessType = 'POST';
+				} else if (like == false) {
+					accessType = 'DELETE';
+				};
+				
+				
+				$.ajax({
+					type: 'POST',
+					url: "likes.php",
+					data: { access_token: $accessToken, media_id: id ,type: accessType},
+					success: function(data, dataType) {
+						//console.log('OK = '+data);
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+						//alert('error = ' + errorThrown);
+					}
+				})	
+				
+			})
+	    }
+	    
+		function getCookie() {
+			var data = $accessToken+'/'+$username;
+			if (document.cookie) {
+				var cookies = document.cookie.split("; ");
+				for (var i = 0; i < cookies.length; i++) {
+					var str = cookies[i].split("=");
+					if (str[0] == cookieName) {
+						var cookie_value = unescape(str[1]);
+						cookieValue = unescape(str[1])
+						getUser(cookie_value);
+						if (!isNaN($accessToken)) $accessToken = ++cookie_value;
+						break;
+					}
+				}
+			}
+		}
+		
+		function getUser(cv) {
+			var cvs = cv.split('/');
+			$.ajax({
+				type: 'POST',
+				url: "https://api.instagram.com/v1/users/search?q="+cvs[1]+'&access_token='+cvs[0],
+				dataType: "jsonp",
+				success: function(data, dataType) {
+					$username = data.data[0].username;
+					$profile_picture = data.data[0].profile_picture;
+					$id = data.data[0].id;
+					buildUser();
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown){
+					alert('ログイン失敗');
+					
+				}
+			})	
+		}
+		
+		function setCookie(){
+			if (!cookieValue) {
+				setupLogin()
+			}
+		}
+		
+		function delCookie(){
+			var date1 = new Date();
+			date1.setTime(0);
+			document.cookie = cookieName+"=;expires="+date1.toGMTString();
+			$('#profPict,#userName').empty().remove();
+			location.reload();
+		}
+		
+		function buildUser() {
+			if ($profile_picture) {
+				setupLike($accessToken);
+				$header.append(
+					'<div id="userContainer">'+
+						'<div id="userName"><p>'+$username+'</p></div>'+
+						'<img id="profPict" src="'+$profile_picture+'" width="30" height="30" />'+
+					'</div>');
+				$('#profPict,#userName').hide();
+				setTimeout(function(){
+					$('#profPict').css({
+						'position':'absolute',
+						'right':0+'px',
+						'top':'0px',
+						'border':'2px solid #ccc'
+					}).click(delCookie).fadeIn(300);
+					$('#userContainer').css({
+						'position':'absolute',
+						'left':($win.width()/2+$necoContainer.width()/2)-15+'px',
+						'top':'9px'
+					})
+					$('#userName').css({
+						'position':'absolute',
+						'right':45+'px',
+						'top':'8px',
+						'text-align':'right !important',
+						'font-size':'14px !important'
+					}).fadeIn(300);
+					
+				}, 1000);
+			}
+		}
+		
+		function setupLogin() {
+			$('#login')/*.fadeIn()*/.animate({'right':'20px'}, 500,'swing').click(function(){
+				var client_id = '28977a1a96d94967a2cb14709492c46d';
+				var redirect_uri = 'http://necostagram.com/';
+				location.href = 'https://api.instagram.com/oauth/authorize/?client_id='+client_id+'&redirect_uri='+redirect_uri+'&response_type=code&scope=likes';
+			});
+		}
+	return this;
 	});
 }).call(this);
