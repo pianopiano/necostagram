@@ -22,7 +22,6 @@ body {
     color: #8c7e7e;
     opacity: 0;
     min-height: 280px;
-    
 	-webkit-border-top-left-radius: 10px;  
 	-webkit-border-top-right-radius: 10px; 
 	-moz-border-radius-topleft: 10px;  
@@ -91,7 +90,6 @@ body {
 	-webkit-box-shadow: 1px 1px 1px #FFE3CD;
 }
 
-
 .clearfix {
 	zoom: 1;
 }
@@ -107,6 +105,10 @@ body {
 	display: none;
 	position: fixed;
 	top:300px;
+	width: 70px;
+	height: 133px;
+	background: url(../images/necoLoader.min.png) no-repeat 0 0;
+	overflow: hidden;
 }
 
 .necostagram {
@@ -127,9 +129,9 @@ body {
 	text-align: center;
 	color: #8c7e7e;
 	z-index: 1;
-	box-shadow: 5px 5px 10px #ccc;
-	-moz-box-shadow: 5px 5px 10px #ccc;
-	-webkit-box-shadow: 5px 5px 10px #ccc;
+	box-shadow: 5px 5px 5px #ddd;
+	-moz-box-shadow: 5px 5px 5px #ddd;
+	-webkit-box-shadow: 5px 5px 5px #ddd;
 	opacity: 0.95;
 }
 
@@ -247,9 +249,7 @@ h1 {
 	float: left;
 	margin: 0 10px;
 }
-/*
-	sns
----------------------------------------*/
+
 #icon {
 	float: right;
 	margin: 0 7px;
