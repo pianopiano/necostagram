@@ -14,10 +14,11 @@
 		var pageTop = new PageTop();
 		var header = new Header();
 		var sns = new SNS();
-		//var nya = new Nya();
+		var nya = new Nya();
 		var max = 40;
 		var isAnimated = true;
 		var loaded = false;
+		var firstId = null;
 		
 		
 		var onResizeHandler = function() {
@@ -25,11 +26,14 @@
 			var container = necoContainer.body;
 			if (!useragent.ios) {
 				if (loaded) container.masonry('destroy');
+			} else {
+				if ($('#necoContainer').children('div').eq(0).attr('id')!=firstId) {
+					if (loaded) container.masonry('destroy');
+					firstId = $('#necoContainer').children('div').eq(0).attr('id');
+				}
 			}
-			
 			container.masonry({
-				itemSelector: '.box',
-				isAnimated: isAnimated
+				itemSelector: '.box'
 			});
 		}
 
@@ -40,13 +44,18 @@
 			}, 5000);
 		}
 		
+		var callNya = function() {
+			setTimeout(function(){
+				nya.play();
+			}, 800);
+		}
 		
 		var xmlLoadComplete = function(data) {
 			necoContainer.setWidth($win);
 			necoContainer.build(data, max, function(e){
+				onResizeHandler();
 				if (e=='resize') { 
-					onResizeHandler();
-					//nya.play();
+					callNya();
 				}
 				loopLoader();
 			})
@@ -71,22 +80,25 @@
 			$win.off('load');
 			pageTop.init();
 			necoContainer.init($win);
-			necoContainer.append(sns.body);
 			header.fadeIn(800);
-			nowLoading.fadeOut(800, function(){
+			nowLoading.fadeOut(1000, function(){
 				nowLoading.stop();
 				nowLoading.remove();
 				necoContainer.body.masonry({
-					itemSelector: '.box',
-					isAnimated: isAnimated
+					itemSelector: '.box'
 				});
 				if (!useragent.ios) necoContainer.addEvents();
 				necoContainer.show();
 				pageTop.show();
-				sns.show();
-				
+				setTimeout(function() {
+					$('#necoContainer').children('div').eq($('#necoContainer').children('div').length-1).after(sns.body);
+					onResizeHandler();
+					setTimeout(function() {
+						$('#sns').css({'opacity': '1'});
+					}, 200)
+				}, 200)
 				addEvents();
-				//nya.play();
+				callNya();
 				loaded = true;
 			});
 		}
@@ -97,12 +109,10 @@
 				necoContainer.isMob()
 				isAnimated = false;
 			} else necoContainer.isPc();
-			
-			//nya.init();
+			nya.init();
 			$win.on('load', windowLoaded);
 			nowLoading.init($win).fadeIn();
 			nowLoading.start();
-			sns.hide();
 			xmlLoadCommand.load(max, xmlLoadComplete);
 		}
 		
