@@ -265,3 +265,30 @@ h1 {
 	z-index: 5;
 	display: none;
 }
+
+.pc .thumbneco {
+	-webkit-mask-image: url(../images/circle.png);
+	-webkit-mask-size: 280px;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+}
+
+.smp .box {
+	-webkit-transition-duration: 0s;
+	-moz-transition-duration: 0s;
+	-ms-transition-duration: 0s;
+	-o-transition-duration: 0s;
+	transition-duration: 0s;
+}
+
+.pc.chrome #copyright {
+	letter-spacing: -0.05em;
+}
+
+.box:hover .description .thumbnail {
+	border: 1px solid #8c7e7e;
+}
+
+.box:hover .description .username {
+	color: #8c7e7e;
+}

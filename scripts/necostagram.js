@@ -6,14 +6,16 @@ var UserAgent = (function(){
 		var ua = navigator.userAgent;
 		var ios = false;
 		var ie = false;
-		var chrome = false;
 		if (ua.indexOf('iPhone') > 0 && ua.indexOf('iPad') === -1 || ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0) {
 			ios = true;
+			$(document.body).addClass('smp');
+		} else {
+			$(document.body).addClass('pc');
 		}
 		
 		if (ua.search(/Safari/) !== -1) {
 			if (ua.search(/Chrome/) !== -1) {
-				chrome = true;
+			$(document.body).addClass('chrome');
 			}
 		} else if (ua.search(/MSIE 10/) !== -1 || ua.search(/MSIE 9/) !== -1 || ua.search(/MSIE 8/) !== -1) {
 			ie = true;
@@ -21,7 +23,6 @@ var UserAgent = (function(){
 		
 		this.ios = ios;
 		this.ie = ie;
-		this.chrome = chrome;
 	}
 	return UserAgent;
 })()
@@ -89,8 +90,8 @@ var NecoContainer = (function(){
 			for (i = _i = 0; 0 <= max ? _i <= max : _i >= max; i = 0 <= max ? ++_i : --_i) {
 				_data = data.data[i];
 				try {
-					if (_data.images.thumbnail.url === void 0) url = _data.images.thumbnail;
-					else url = _data.images.thumbnail.url;
+					if (_data.images.low_resolution.url === void 0) url = _data.images.low_resolution;
+					else url = _data.images.low_resolution.url;
 				} 
 				catch (e) {url = '#';}
 				try {link = _data.link;}
@@ -106,7 +107,7 @@ var NecoContainer = (function(){
 				catch (e) {capsText = '';}
 				link = link.replace("instagr.am", "instagram.com");
 				if (link !== '#' || url !== '#') {
-					content = '<div class="box image shadow" id="' + _data.id + '">' + '<a href="' + link + '" target="_blank">' + '<img class="thumbneco" src="' + url + '" width="200" />' + '</a><br />' + '<div class="description">' + '<a href="http://instagram.com/' + user.username + '" target="_blank">' + '<img class="thumbnail" src="' + user.profile_picture + '" width="30" />' + '<p class="username"><strong>' + user.username + '</strong></p>' + '</a>' + '<p class="caption">' + capsText + '</p>' + '</div>' + '</div>';
+					content = '<div class="box image shadow" id="' + _data.id + '"><a href="' + link + '" target="_blank"><img class="thumbneco" src="' + url + '" width="200" /></a><br /><div class="description"><a href="http://instagram.com/' + user.username + '" target="_blank"><img class="thumbnail" src="' + user.profile_picture + '" width="30" /><p class="username"><strong>' + user.username + '</strong></p></a><p class="caption">' + capsText + '</p></div></div>';
 					contents += content;
 					if (max !== 1) {
 						if (i === (len - 1)) {
@@ -140,31 +141,29 @@ var NecoContainer = (function(){
 		}
 		
 		this.addEvents = function() {
-			$thumbneco.live('mouseover', function() {
-				var duration = 20;
-				var color = '#f2f0f0';
+			$thumbneco.live('mouseenter', function() {
+				var duration = 30;
 				var radius = '110px';
 				return $(this).stop().transition({
 					"-webkit-mask-size": "200px"
 				}, duration, 'ease-out').css({
 					transform: "rotate(5deg)"
 				}).closest('.image').stop().transition({
-					'background-color': color,
+					'background-color': '#f2f0f0',
 					'-webkit-border-top-left-radius': radius,
 					'-moz-border-radius-topleft': radius,
 					'-webkit-border-top-right-radius': radius,
 					'-moz-border-radius-topright': radius
 				}, duration, 'linear');
-			}).live('mouseout', function() {
+			}).live('mouseleave', function() {
 				var duration = 30;
-				var color = '#ffffff';
 				var radius = '10px';
 				return $(this).stop().transition({
 					"-webkit-mask-size": "280px"
 				}, duration, 'ease-out').css({
 					transform: "rotate(0deg)"
 				}).closest('.image').stop().transition({
-					'background-color': color,
+					'background-color': '#ffffff',
 					'-webkit-border-top-left-radius': radius,
 					'-moz-border-radius-topleft': radius,
 					'-webkit-border-top-right-radius': radius,
@@ -172,12 +171,6 @@ var NecoContainer = (function(){
 				}, duration, 'linear');
 			});
 			
-			
-			$('.description').hover(function() {
-				$(this).find('.thumbnail').css({'border': '1px solid #8c7e7e'}).end().find('.username').css('color', '#8c7e7e');
-			}, function() {
-				$(this).find('.thumbnail').css({'border': '1px solid #ccc'}).end().find('.username').css('color', '#444444');
-			});
 		}
 		
 		this.show = function() {
@@ -186,25 +179,6 @@ var NecoContainer = (function(){
 		
 		this.append = function(obj) {
 			$this.append(obj);
-		}
-		
-		this.isMob = function() {
-			$('.box').css({
-				'-webkit-transition-duration': '0s',
-				'-moz-transition-duration': '0s',
-				'-ms-transition-duration': '0s',
-				'-o-transition-duration': '0s',
-				'transition-duration': '0s'
-			});
-		}
-		
-		this.isPc = function() {
-			$thumbneco.css({
-				'-webkit-mask-image': 'url(../images/circle.png)',
-				'-webkit-mask-size': '280px',
-				'-webkit-mask-repeat': 'no-repeat',
-				'-webkit-mask-position': 'center'
-			});
 		}
 	}
 	return NecoContainer;
@@ -281,9 +255,6 @@ var NowLoading = (function(){
 var Header = (function(){
 	function Header() {
 		var $this = $('#header');
-		
-		
-		
 		this.fadeIn = function(sec, collback) {
 			$this.animate({
 				'top': '0'
@@ -319,22 +290,25 @@ var PageTop = (function(){
 		}
 		
 		var init = function() {
+			var gif = new Image();
+			for (var i = 0; i < 3; i++) {gif.src = img[i];};
+		
 			isJump = false;
 			addEvents();
 			
-			$this.on('mouseover', mouseover)
-			.on('mouseout', mouseout)
+			$this.on('mouseenter', mouseenter)
+			.on('mouseleave', mouseleave)
 			.on('click', jump).css({
 				'right': '0',
 				'bottom': '-90px'
 			}).find('img').attr('src', img[0]);
 		}
 		
-		var mouseover = function() {
+		var mouseenter = function() {
 			$this.find('img').attr('src', img[1]);
 		};
 		
-		var mouseout = function() {
+		var mouseleave = function() {
 			$this.find('img').attr('src', img[0]);
 		};
 
@@ -342,8 +316,8 @@ var PageTop = (function(){
 			isJump = true;
 			setTimeout(function() {
 				$this.find('img').attr('src', img[2]);
-			}, 300);
-			$this.off('mouseover').off('mouseout').off('click').stop().animate({
+			}, 200);
+			$this.off('mouseenter').off('mouseleave').off('click').stop().animate({
 				'right': '100px',
 				'bottom': $win.height() + 'px'
 			}, 1500, 'easeInOutExpo', init);
@@ -413,7 +387,7 @@ var Nya = (function() {
 		this.play = function() {
 			var n = Math.floor(Math.random()*(SOUNDS.length));
 			SOUNDS[n].play();
-            SOUNDS[n] = new Audio( SOUNDS[n].src );
+      SOUNDS[n] = new Audio( SOUNDS[n].src );
 		}
 	}
 	return Nya;

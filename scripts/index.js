@@ -16,7 +16,6 @@
 		var sns = new SNS();
 		var nya = new Nya();
 		var max = 40;
-		var isAnimated = true;
 		var loaded = false;
 		var firstId = null;
 		
@@ -51,6 +50,7 @@
 		}
 		
 		var xmlLoadComplete = function(data) {
+			console.log(data)
 			necoContainer.setWidth($win);
 			necoContainer.build(data, max, function(e){
 				onResizeHandler();
@@ -87,7 +87,7 @@
 				necoContainer.body.masonry({
 					itemSelector: '.box'
 				});
-				if (!useragent.ios) necoContainer.addEvents();
+				if ($(document.body).hasClass('pc')) necoContainer.addEvents();
 				necoContainer.show();
 				pageTop.show();
 				setTimeout(function() {
@@ -104,11 +104,6 @@
 		}
 		
 		var init = function() {
-			if (useragent.chrome) $('#copyright').css({'letter-spacing': '-0.1em'});
-			if (useragent.ios) {
-				necoContainer.isMob()
-				isAnimated = false;
-			} else necoContainer.isPc();
 			nya.init();
 			$win.on('load', windowLoaded);
 			nowLoading.init($win).fadeIn();

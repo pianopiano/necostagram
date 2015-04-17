@@ -10,7 +10,7 @@ var XMLLoadCommand = (function(){
 				data: {
 					count: max.toString()
 				},
-				dataType: 'jsonp',
+				dataType: 'xml',
 				error: function(jqXHR, textStatus, errorThrown) {
 					return collback(textStatus);
 				},
