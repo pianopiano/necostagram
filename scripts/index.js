@@ -2,7 +2,7 @@
   ヾ(ΦωΦ=)にゃーにゃーにゃー
 */
 
-(function(){
+(function($){
 	var _this = this;
 
 	$(function() {
@@ -18,7 +18,8 @@
 		var max = 40;
 		var loaded = false;
 		var firstId = null;
-		
+		var idArray = [];
+		var newArrival = {};
 		
 		var onResizeHandler = function() {
 			necoContainer.setWidth($win);
@@ -37,7 +38,7 @@
 		}
 
 		var loopLoader = function() {
-			max = 1;
+			max = 10;
 			setTimeout(function() {
 				xmlLoadCommand.load(max, xmlLoadComplete);
 			}, 5000);
@@ -50,15 +51,29 @@
 		}
 		
 		var xmlLoadComplete = function(data) {
-			console.log(data)
-			necoContainer.setWidth($win);
-			necoContainer.build(data, max, function(e){
-				onResizeHandler();
-				if (e=='resize') { 
-					callNya();
+			var json = data;
+			newArrival = {data: []};
+			for (var i = 0, l = json.data.length; i < l; i++) {
+				var flag = false;
+				for (var j = 0, l2 = idArray.length; j < l2; j++) {
+					if (idArray[j]==json.data[i].id) flag = true;
 				}
+				if (!flag) {
+					idArray.push(json.data[i].id);
+					newArrival.data.push(json.data[i])
+				}
+			};
+			if (newArrival.data.length==0) {
 				loopLoader();
-			})
+				return;
+			} else {
+				necoContainer.setWidth($win);
+				necoContainer.build(newArrival, newArrival.data.length, function(e){
+					onResizeHandler();
+					if (e=='resize') callNya();
+					loopLoader();
+				})
+			}
 		}
 		
 		
@@ -84,9 +99,7 @@
 			nowLoading.fadeOut(1000, function(){
 				nowLoading.stop();
 				nowLoading.remove();
-				necoContainer.body.masonry({
-					itemSelector: '.box'
-				});
+				necoContainer.body.masonry({itemSelector: '.box'});
 				if ($(document.body).hasClass('pc')) necoContainer.addEvents();
 				necoContainer.show();
 				pageTop.show();
@@ -116,4 +129,4 @@
 		return _this;
 	});
 	
-}).call(this)
+})(jQuery);

@@ -25,7 +25,7 @@ var UserAgent = (function(){
 		this.ie = ie;
 	}
 	return UserAgent;
-})()
+})();
 
 /*
   ヾ(ΦωΦ=)にゃーにゃーにゃー
@@ -36,9 +36,7 @@ var XMLLoadCommand = (function(){
 		this.load = function(max, collback){
 			$.ajax({
 				url: "https://api.instagram.com/v1/tags/ねこ/media/recent?client_id=f39149070d2d4c5fb73cdddcaf00e0dd",
-				data: {
-					count: max.toString()
-				},
+				data: {count: max.toString()},
 				dataType: 'jsonp',
 				error: function(jqXHR, textStatus, errorThrown) {
 					return collback(textStatus);
@@ -50,7 +48,7 @@ var XMLLoadCommand = (function(){
 		};
 	}
 	return XMLLoadCommand;
-})()
+})();
 
 
 /*
@@ -60,8 +58,8 @@ var NecoContainer = (function(){
 	function NecoContainer() {
 		var $this = $('#necoContainer');
 		var $thumbneco = $('.thumbneco');
-		var IDs = [];
 		var contents = '';
+		var firstBuild = true;
 		
 		this.setWidth = function($win) {
 			var ww = $win.width();
@@ -98,10 +96,7 @@ var NecoContainer = (function(){
 				catch (e) {link = '#';}
 				try {user = _data.user;} 
 				catch (e) {
-					user = {
-						'profile_picture': '',
-						'username': ''
-					};
+					user = {'profile_picture': '','username': ''};
 				}
 				try {capsText = _data.caption.text;}
 				catch (e) {capsText = '';}
@@ -109,22 +104,20 @@ var NecoContainer = (function(){
 				if (link !== '#' || url !== '#') {
 					content = '<div class="box image shadow" id="' + _data.id + '"><a href="' + link + '" target="_blank"><img class="thumbneco" src="' + url + '" width="200" /></a><br /><div class="description"><a href="http://instagram.com/' + user.username + '" target="_blank"><img class="thumbnail" src="' + user.profile_picture + '" width="30" /><p class="username"><strong>' + user.username + '</strong></p></a><p class="caption">' + capsText + '</p></div></div>';
 					contents += content;
-					if (max !== 1) {
+					
+					if (firstBuild) {
 						if (i === (len - 1)) {
 							$this.append(contents);
+							firstBuild = false;
 							collback(null);
 						}
-						IDs.push(user.id);
 					} else {
-						if (IDs[0] !== user.id) {
-							IDs.unshift(user.id);
-							$this.prepend(content);
+						$this.prepend(content);
+						if (i === (len - 1)) {
 							setTimeout(function() {
 								$this.find('.image').css({'opacity': '1'});
 								collback('resize');
 							}, 1000);
-						} else {
-							collback(null);
 						}
 					}
 				}
@@ -134,10 +127,7 @@ var NecoContainer = (function(){
 		this.body = $this;
 		
 		this.init = function(win) {
-			$this.find('.image').css({
-				'top': '500px',
-				'left': win.width() / 2 - 200 + 'px'
-			});
+			$this.find('.image').css({'top': '500px','left': win.width() / 2 - 200 + 'px'});
 		}
 		
 		this.addEvents = function() {
@@ -182,7 +172,7 @@ var NecoContainer = (function(){
 		}
 	}
 	return NecoContainer;
-})()
+})();
 
 
 /*
@@ -194,10 +184,7 @@ var NowLoading = (function(){
 		var timer = null;
 		
 		this.init = function(win) {
-			$this.css({
-				'left': win.width() / 2 - 35 + 'px',
-				'top': win.height() / 2 - 100 + 'px'
-			});
+			$this.css({'left': win.width() / 2 - 35 + 'px','top': win.height() / 2 - 100 + 'px'});
 			return $this;
 		};
 		
@@ -247,7 +234,7 @@ var NowLoading = (function(){
 		};
 	}
 	return NowLoading;
-})()
+})();
 
 /*
   ヾ(ΦωΦ=)にゃーにゃーにゃー
@@ -256,13 +243,11 @@ var Header = (function(){
 	function Header() {
 		var $this = $('#header');
 		this.fadeIn = function(sec, collback) {
-			$this.animate({
-				'top': '0'
-			}, sec, 'easeOutExpo', collback);
+			$this.animate({'top': '0'}, sec, 'easeOutExpo', collback);
 		};
 	}
 	return Header;
-})()
+})();
 
 
 /*
@@ -334,7 +319,7 @@ var PageTop = (function(){
 		
 	}
 	return PageTop;
-})()
+})();
 
 /*
   ヾ(ΦωΦ=)にゃーにゃーにゃー
@@ -354,7 +339,7 @@ var SNS = (function(){
 		this.body = $this;
 	}
 	return SNS;
-})()
+})();
 
 /*
   ヾ(ΦωΦ=)にゃーにゃーにゃー
@@ -391,4 +376,4 @@ var Nya = (function() {
 		}
 	}
 	return Nya;
-})()
+})();
