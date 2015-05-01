@@ -66,16 +66,6 @@
 		
 		var addEvents = function(){
 			$win.on('resize', onResizeHandler);
-			var me = $('#me');
-			$('#icon').hover(function() {
-				$(this).fadeTo(0, 0.8);
-				me.fadeIn(200);
-			}, function() {
-				$(this).fadeTo(0, 1);
-				me.fadeOut(200);
-			}).click(function() {
-				me.fadeOut(0);
-			});
 		}
 		
 		var windowLoaded = function() {
@@ -91,9 +81,7 @@
 				setTimeout(function() {
 					$('#necoContainer').children('div').eq($('#necoContainer').children('div').length-1).after(sns.body);
 					onResizeHandler();
-					setTimeout(function() {
-						$('#sns').css({'opacity': '1'});
-					}, 200)
+					$('#sns').css({'opacity': '1'});
 				}, 200)
 				addEvents();
 				loaded = true;
@@ -107,7 +95,8 @@
 			xmlLoadCommand.load(max, xmlLoadComplete);
 			
 			$('#snsinner').next('br').remove();
-			$('#icon').parents('a').css({'float': 'left'})
+			$('#icon').parents('a').css({'float': 'left'});
+			$('#me').remove();
 		}
 		
 		init();

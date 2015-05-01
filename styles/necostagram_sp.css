@@ -7,7 +7,13 @@ body {
 	background-position-x:0px;
 	text-align: left;
 }
-
+#necoContainer {
+	margin: 60px auto 0;
+	position: relative;
+}
+.thumbneco {
+	width: 100%;
+}
 .image {
 	margin: 8px 0;
 	background-color: #ffffff;
@@ -17,31 +23,24 @@ body {
   opacity: 0;
 
 }
-
+.image a {
+	text-decoration: none;
+}
 .image img {
 	padding: 0;
 	border-bottom: 1px dotted #ddd;
 }
-.thumbneco {
-	width: 100%;
-}
-.image a {
-	text-decoration: none;
-}
-
 .description {
 	background-color: #f2f0f0;
 	padding: 10px;
 	position: relative;
 }
-
 .caption {
 	clear: both;
 	width: 100%;
 	margin: 0;
 	font-size: 16px;
 }
-
 .username {
 	font-size: 24px;
   margin: 10px 0 0 0;
@@ -50,15 +49,14 @@ body {
 	width: auto;
 	overflow: hidden;
 }
-
 .thumbnail {
 	padding:0 !important;
 	float: left;
 	margin: 0 10px 10px 0;
 	border: 1px solid #ccc;
 	width: 50px;
+	border-radius: 30px;
 }
-
 .shadow {
 	box-shadow: 1px 1px 1px #ccc;
 	-moz-box-shadow: 1px 1px 1px #ccc;
@@ -69,16 +67,6 @@ body {
 	-moz-box-shadow: 1px 1px 1px #FFE3CD;
 	-webkit-box-shadow: 1px 1px 1px #FFE3CD;
 }
-
-.clearfix {
-	zoom: 1;
-}
-
-#necoContainer {
-	margin: 60px auto 0;
-	position: relative;
-}
-
 #necoLoader {
 	display: none;
 	margin:200px auto 0;
@@ -87,13 +75,6 @@ body {
 	background: url(../images/necoLoader.min.png) no-repeat 0 0;
 	overflow: hidden;
 }
-
-.necostagram {
-	color: #8c7e7e;
-	margin: 10px auto;
-	text-align: center;
-}
-
 #header {
 	position: fixed;
 	top:-60px;
@@ -111,7 +92,6 @@ body {
 	-webkit-box-shadow: 5px 5px 5px #ddd;
 	opacity: 0.95;
 }
-
 h1 {
 	width: 305px;
 	height: 45px;
