@@ -115,11 +115,15 @@ var NecoContainer = (function(){
 					} else {
 						$this.prepend(content);
 						if (i === (len - 1)) {
-							setTimeout(function() {
-								$this.find('.image').css({'opacity': '1'});
-								collback('resize');
-							}, 1000);
+							collback('resize');
 						}
+						for (var j = 0, l2 = $this.find('.image').length; j < l2; j++) {
+							if ($this.find('.image').eq(j).css('opacity')=='0') {
+								var h = $this.find('.image').eq(j).outerHeight();
+								$this.find('.image').eq(j).height(0).css({'opacity': '1'}).animate({'height': h+$(window).width()}, 1000, 'easeOutExpo')
+							}
+						}
+						
 					}
 				}
 			}
